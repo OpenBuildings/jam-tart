@@ -59,7 +59,7 @@ class Jamtart_HtmlTest extends PHPUnit_Framework_TestCase {
 
 	public function test_submenu()
 	{
-		$rendered = (string) Tart_Html::submenu('feed', 'shop', array('shop' => 'Shop', 'magazine' => 'Magazine'));
+		$rendered = Tart_Html::submenu('feed', 'shop', array('shop' => 'Shop', 'magazine' => 'Magazine'))->render();
 
 		$this->assertSelectEquals('.nav > li.active > a', 'Shop', TRUE, $rendered);
 		$this->assertSelectEquals('.nav > li > a', 'Magazine', TRUE, $rendered);

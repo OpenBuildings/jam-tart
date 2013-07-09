@@ -79,7 +79,7 @@ class Jamtart_ColumnTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http://example.com/ths-is-a-ve…&nbsp;<a href="http://example.com/ths-is-a-very-lon-url/and-should-be-shortend" target="_blank"><i class="icon-share-alt"></i></a>', $rendered);
 
 		$rendered = $column->name('cover')->render();
-		$this->assertEquals('<img src="https://c532063.ssl.cf3.rackcdn.com/test_city/1/1/image.jpg" alt="Bigville" class="img-polaroid" />', $rendered);
+		$this->assertEquals('<img src="/upload/test_city/1/1/image.jpg" alt="Bigville" class="img-polaroid" />', $rendered);
 	}
 
 	public function test_callback()

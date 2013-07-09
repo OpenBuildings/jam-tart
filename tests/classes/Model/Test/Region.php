@@ -10,7 +10,7 @@ class Model_Test_Region extends Jam_Model {
 	public static function initialize(Jam_Meta $meta)
 	{
 		$meta
-			->db(Functest_Fixture_Database::instance()->db_name())
+			->db(Kohana::TESTING)
 
 			->behaviors(array(
 				'nested' => Jam::behavior('nested'),

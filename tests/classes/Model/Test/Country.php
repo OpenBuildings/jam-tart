@@ -10,7 +10,7 @@ class Model_Test_Country extends Jam_Model {
 	public static function initialize(Jam_Meta $meta)
 	{
 		$meta
-			->db(Functest_Fixture_Database::instance()->db_name())
+			->db(Kohana::TESTING)
 
 			->associations(array(
 				'cities' => Jam::association('hasmany'),
