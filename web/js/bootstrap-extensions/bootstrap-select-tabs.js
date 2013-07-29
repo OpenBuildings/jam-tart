@@ -44,11 +44,17 @@
           $target.removeClass('fade');
         }
 
+        if ($this.data('disable')) {
+          $target.removeAttr('disabled');
+          $previous.attr('disabled', 'disabled');
+        }
+
         $this.trigger({
           type: 'shown',
           target: $target,
           relatedTarget: $previous
         });
+
       }
 
       if (transition) {

@@ -22,11 +22,6 @@ $(function(){
 		$($(e.relatedTarget).attr('href')).attr('disabled', 'disabled');
 	});
 
-	$('select[data-provide="selecttab"]').on('shown', function (e) {
-		$(e.target).removeAttr('disabled');
-		$(e.relatedTarget).attr('disabled', 'disabled');
-	});
-
 	$('.accordion')
 		.on('shown', function (e) {
 			$(e.target).removeAttr('disabled');

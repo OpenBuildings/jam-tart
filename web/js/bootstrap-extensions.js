@@ -396,17 +396,14 @@
 				placeholder: $this.data('placeholder'),
 				tolerance: $this.data('tolerance'),
 				stop: function(event, ui) {
-
 					if ($(this).data('sortUrl')) {
 						// determine whether we move the element up or down
-						var to = ui.item.next();
-
 						$.ajax([
 							$(this).data('sortUrl'), 
 							'&from=',
 							getElementSortableId(ui.item, $(this).data('handle')),
 							'&to=',
-							getElementSortableId(to, $(this).data('handle'))
+							getElementSortableId(ui.item.next(), $(this).data('handle'))
 						].join(''));
 					}
 					else
@@ -693,11 +690,17 @@
           $target.removeClass('fade');
         }
 
+        if ($this.data('disable')) {
+          $target.removeAttr('disabled');
+          $previous.attr('disabled', 'disabled');
+        }
+
         $this.trigger({
           type: 'shown',
           target: $target,
           relatedTarget: $previous
         });
+
       }
 
       if (transition) {
