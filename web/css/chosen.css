@@ -487,5 +487,5 @@ div.chzn-container-multi {
 }
 div.chzn-container-multi ul.chzn-choices li.search-choice {
     font-size: 14px;
-    line-height: 14px;
+    /*line-height: 14px;*/
 }
