@@ -184,7 +184,7 @@ table .ui-sortable-helper{
 table.ui-sortable .sortable-placeholder {
   height: 60px;
 }
-.ui-sortable .sortable-placeholder.thumbnail {
+.ui-sortable .sortable-placeholder {
   height: 170px;
 }
 
