@@ -414,7 +414,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				}
 			});
 
-			$h('ul', array('class' => 'thumbnails', 'data-provide' => ($options['sortable'] ? 'sortable' : NULL), 'data-sort' => $options['sortable'], 'id' => $options['container']), function($h, $self) use ($name, $options, $attributes) {
+			$h('ul', array('class' => 'thumbnails', 'data-provide' => ($options['sortable'] ? 'sortable' : NULL), 'data-items' => '> li', 'data-tolerance' => 'pointer', 'data-placeholder' => 'sortable-placeholder thumbanil '.$options['sortable'], 'id' => $options['container']), function($h, $self) use ($name, $options, $attributes) {
 				
 				foreach ($self->object()->$name as $index => $item) 
 				{

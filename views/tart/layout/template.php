@@ -8,6 +8,7 @@
 		<link href="/jam-tart/css/bootstrap-responsive.min.css" rel="stylesheet" media="all">
 		<link href="/jam-tart/css/bootstrap-fileupload.min.css" rel="stylesheet" media="all">
 		<link href="/jam-tart/css/chosen.css" rel="stylesheet" media="all">
+		<link href="/jam-tart/css/general.css" rel="stylesheet" media="all">
 		
 		<?php echo View::factory('tart/layout/header') ?>
 

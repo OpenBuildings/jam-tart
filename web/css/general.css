@@ -1,0 +1,302 @@
+
+body {
+  padding-top: 60px;
+}
+
+input[type="date"] {
+  display: -webkit-inline-flex;
+}
+
+.btn-group-vertical .btn {
+  text-align: left;
+}
+
+input.hide,
+select.hide,
+textarea.hide {
+  display: none;
+}
+
+/* Fix first item in thumbnails row for row-fluid */
+
+.row-fluid ul.thumbnails li.span12 + li {
+  margin-left: 0;
+}
+
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) {
+  margin-left: 0;
+}
+
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) {
+  margin-left: 0;
+}
+
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) {
+  margin-left: 0;
+}
+
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) {
+  margin-left: 0;
+}
+
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) {
+  margin-left: 0;
+}
+
+.table tr.success > td {
+  background-color: #dff0d8;
+}
+
+.table tr.error > td {
+  background-color: #f2dede;
+}
+
+.table tr.warning > td {
+  background-color: #fcf8e3;
+}
+
+.table tr.info > td {
+  background-color: #d9edf7;
+}
+
+/* Multiform Plugin
+====================================== */
+
+.multiform {
+  margin-bottom: 10px;
+}
+
+/* Image Tags 
+====================================== */
+
+.image-tags ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.image-tags.draggable-active .image-tag_content {
+  display: none;
+}
+
+.image-tag {
+  padding: 4px;
+  background-color: white;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+}
+
+.image-tag .image-tag-content {
+  display: none;
+  width: 250px;
+  background-color: white;
+}
+
+.image-tag:hover .image-tag-content {
+  display: block;
+}
+
+/* Inner Table */
+
+.inner-table {
+  display: table;
+}
+
+.inner-table .inner-row {
+  display: table-row;
+}
+
+.inner-table .inner-row .inner-cell {
+  display: table-cell;
+  padding: 1px 3px;
+}
+
+/* Inner Group 
+====================================== */
+
+.inner-group {
+  margin-bottom: 10px;
+}
+
+.inner-group input,
+.inner-group textarea,
+.inner-group select {
+  width: 92%;
+}
+
+/* Small Thumb 
+====================================== */
+
+.small-thumb {
+  height: 70px;
+}
+
+.small-thumb img {
+  height: 100%;
+}
+
+/* Draggable Plugin 
+====================================== */
+
+.draggable-container {
+  position: relative;
+}
+
+.draggable-container *[draggable] {
+  position: absolute;
+}
+
+.sortable-container .drop-target {
+  position: relative;
+}
+
+.sortable-container .drop-target:after {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  display: block;
+  width: 100%;
+  border-top: 2px dashed yellow;
+  border-radius: 5px;
+  content: ' ';
+}
+table .ui-sortable-helper{
+  opacity: 0.5;
+}
+.ui-sortable .thumbnail {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+}
+.ui-sortable .sortable-placeholder {
+  background: #fffcdb !important;
+}
+.ui-sortable .sortable-placeholder td {
+  background: #fffcdb !important;
+}
+table.ui-sortable .sortable-placeholder {
+  height: 60px;
+}
+.ui-sortable .sortable-placeholder.thumbnail {
+  height: 170px;
+}
+
+/* Filter Plugin 
+====================================== */
+
+*[data-provide="filters"] {
+  cursor: move;
+  border-bottom: 1px dotted black;
+}
+
+.label[data-provide="filters"] {
+  border-bottom: none;
+}
+
+.tart-filter.drop-target {
+  position: relative;
+}
+
+.tart-filter.drop-target:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  margin: -4px;
+  line-height: 300px;
+  color: #c09853;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  content: 'Drop Filter Here';
+  opacity: 0.9;
+}
+
+/* Stats 
+====================================== */
+
+.stats .thumbnail {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.stats .thumbnail.height1 {
+  height: 130px;
+}
+
+.stats .thumbnail.height2 {
+  height: 470px;
+}
+
+.stats .thumbnail:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 130px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 5px #CCCCCC;
+  pointer-events: none;
+  background-color: #EEEEEE;
+  content: 'Loading ...';
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.stats .thumbnail.progress:after {
+  opacity: 1;
+}
+
+.stats .thumbnail.error:after {
+  background-color: #f2dede;
+  content: 'Error Loading Data';
+  opacity: 1;
+}
+
+.stats .thumbnail h4 {
+  margin-top: 0;
+  font-size: 14px;
+  color: #999999;
+}
+
+.stats .thumbnail h4 small {
+  font-size: 12px;
+  color: #BBBBBB;
+}
+
+.stats .thumbnail .caption {
+  height: 100%;
+}
+
+.stats .thumbnail .caption.success {
+  background-color: #dff0d8;
+}
+
+.stats .thumbnail .caption.warning {
+  background-color: #fcf8e3;
+}
+
+.stats .thumbnail strong {
+  display: block;
+  font-size: 50px;
+  line-height: 57px;
+}
