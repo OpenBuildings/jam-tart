@@ -168,7 +168,7 @@ textarea.hide {
 table .ui-sortable-helper{
   opacity: 0.5;
 }
-.ui-sortable .thumbnail {
+.ui-sortable-helper {
   -webkit-transition: none !important;
   -moz-transition: none !important;
   -o-transition: none !important;

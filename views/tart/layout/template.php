@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src="/jam-tart/js/plugins.min.js"></script>
 		<script src="/jam-tart/js/bootstrap.min.js"></script>
 		<script src="/jam-tart/js/bootstrap-extensions.min.js"></script>
