@@ -3,7 +3,7 @@ $(function(){
 	$('body').on('click', 'a[data-confirm]', function(e){
 		e.preventDefault();
 		$('#confirm').remove();
-		$('body').append('<div id="confirm" class="modal hide fade"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h3>Confirm</h3></div><div class="modal-body"><p>'+$(this).data('confirm')+'</p></div><div class="modal-footer"><button class="btn" data-dismiss="modal">Close</button><a class="btn btn-warning" href="' + $(this).attr('href') +'">' + $(this).html() + '</a></div></div>');
+		$('body').append('<div id="confirm" class="modal hide fade"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h3>Confirm</h3></div><div class="modal-body"><p>'+$(this).data('confirm')+'</p></div><div class="modal-footer"><button class="btn" data-dismiss="modal">Close</button><a class="btn btn-warning ' + $(this).attr('class') + '" href="' + $(this).attr('href') +'">' + $(this).html() + '</a></div></div>');
 		$('#confirm').modal('show');
 	});
 
