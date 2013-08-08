@@ -9,6 +9,8 @@
  */
 abstract class Kohana_Tart_Filter_Entry_Search extends Tart_Filter_Entry {
 
+	protected $_label = 'Search';
+
 	public function default_callback()
 	{
 		return function($collection, $value, $name) {
@@ -19,6 +21,6 @@ abstract class Kohana_Tart_Filter_Entry_Search extends Tart_Filter_Entry {
 
 	public function render()
 	{
-		return $this->parent()->form()->row('input', $this->name(), array('label' => 'Search'), array('class' => 'search', 'tabindex' => $this->tabindex()));
+		return $this->parent()->form()->row('input', $this->name(), array('label' => $this->label()), array('class' => 'search', 'tabindex' => $this->tabindex()));
 	}
 }
