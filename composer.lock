@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "96ec43c174fc1993f4df68af2ff2a4cd",
+    "hash": "5c22e579c350c26212753b2253300f5f",
     "packages": [
         {
             "name": "composer/installers",
@@ -117,16 +117,16 @@
         },
         {
             "name": "openbuildings/jam",
-            "version": "0.3.7",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OpenBuildings/jam.git",
-                "reference": "0.3.7"
+                "reference": "0.4.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OpenBuildings/jam/zipball/0.3.7",
-                "reference": "0.3.7",
+                "url": "https://api.github.com/repos/OpenBuildings/jam/zipball/0.4.0",
+                "reference": "0.4.0",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "upload",
                 "validation"
             ],
-            "time": "2013-08-14 09:10:59"
+            "time": "2013-08-15 09:45:51"
         },
         {
             "name": "rackspace/php-opencloud",
@@ -254,22 +254,22 @@
         },
         {
             "name": "openbuildings/jam-auth",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OpenBuildings/jam-auth.git",
-                "reference": "0.1.1"
+                "reference": "0.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OpenBuildings/jam-auth/zipball/0.1.1",
-                "reference": "0.1.1",
+                "url": "https://api.github.com/repos/OpenBuildings/jam-auth/zipball/0.1.2",
+                "reference": "0.1.2",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "*",
                 "facebook/php-sdk": "3.2.*",
-                "openbuildings/jam": "0.3.*",
+                "openbuildings/jam": "0.4.*",
                 "php": ">=5.3.0"
             },
             "require-dev": {
@@ -298,7 +298,7 @@
                 "kohana",
                 "login"
             ],
-            "time": "2013-08-14 09:05:04"
+            "time": "2013-08-15 10:08:36"
         },
         {
             "name": "openbuildings/kohana-test-bootsrap",
