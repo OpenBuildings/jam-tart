@@ -11,7 +11,7 @@ abstract class Kohana_Tart_Filter_Entry_Remoteselect extends Tart_Filter_Entry {
 
 	public function render()
 	{
-		$options = Arr::merge(array('label' => $this->label()), $this->params());
+		$options = Arr::merge(array('label' => __($this->label())), $this->params());
 
 		return $this->parent()->form()->row('remoteselect', $this->name(), $options, array('tabindex' => $this->tabindex()));
 	}

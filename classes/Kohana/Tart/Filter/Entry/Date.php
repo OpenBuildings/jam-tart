@@ -18,7 +18,7 @@ abstract class Kohana_Tart_Filter_Entry_Date extends Tart_Filter_Entry {
 	{
 		return function($collection, $value, $entry) {
 			$collection->where($entry->name(), '=', $value);
-			return "on ".$value;
+			return __('on :value', array(':value' => $value));
 		};
 	}
 }

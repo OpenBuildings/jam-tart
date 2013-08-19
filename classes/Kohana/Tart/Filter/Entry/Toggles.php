@@ -35,7 +35,7 @@ abstract class Kohana_Tart_Filter_Entry_Toggles extends Tart_Filter_Entry {
 	public function render()
 	{
 		return Tart::form($this, function($h, $self){
-			$h('label', $self->label());
+			$h('label', __($self->label()));
 			$h('p', function($h, $self) {
 				$h('div', array('class' => 'btn-group'.($self->vertical() ? ' btn-group-vertical' : ''), 'data-toggle' => 'buttons-radio'), function($h, $self) {
 					if ($self->all())
@@ -45,7 +45,7 @@ abstract class Kohana_Tart_Filter_Entry_Toggles extends Tart_Filter_Entry {
 								'class' => 'btn '.($self->parent()->form()->object()->{$self->name()} ? '' : ' active'), 
 								'href' => Request::current()->url().URL::query(array($self->name() => ''))
 							), 
-							'All'
+							__('All')
 						);
 					}
 					foreach ($self->params() as $value => $label) 

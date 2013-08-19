@@ -9,12 +9,17 @@
  */
 abstract class Kohana_Tart_Index extends Tart_Interface {
 
+	const BATCH_POSITION_TOP = 'top';
+	const BATCH_POSITION_BOTTOM = 'bottom';
+	const BATCH_POSITION_BOTH = 'both';
+
 	protected $_pagination;
 	protected $_offset;
 	protected $_batch_actions = array();
 	protected $_content;
 	protected $_collection;
-	
+	protected $_batch_position = Kohana_Tart_Index::BATCH_POSITION_TOP;
+
 	public function collection(Jam_Query_Builder_Collection $collection = NULL)
 	{
 		if ($collection !== NULL)
@@ -32,6 +37,17 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 		$this->columns($columns);
 
 		$this->_offset = $offset;
+	}
+	
+	public function batch_position($batch_position = NULL)
+	{
+		if ($batch_position !== NULL)
+		{
+			$this->_batch_position = $batch_position;
+			return $this;
+		}
+
+		return $this->_batch_position;
 	}
 
 	public function content(Tart_Interface_Collection $content = NULL)
@@ -136,8 +152,17 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 
 		$html = Tart::html($this, function($h, $self) use ($content) {
 			$h->form(Tart::uri($self->controller(), 'batch'), array('method' => 'get'), function($h, $self) use ($content) {
+				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_TOP)
+				{
+					$h->add($self->render_batch_actions());
+				}
+
 				$h->add($content);
-				$h->add($self->render_batch_actions());
+
+				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTTOM)
+				{
+					$h->add($self->render_batch_actions());
+				}
 			});
 
 			$h->add($self->pagination()->render());

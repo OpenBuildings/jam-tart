@@ -44,11 +44,11 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 		return Tart::html($this, function($h, $self) {
 			if ($self->offset() > 0)
 			{
-				$h->anchor(Tart::uri($self->controller()).URL::query(array('offset' => max(0, $self->offset() - $self->per_page()))), '&laquo; Previous');
+				$h->anchor(Tart::uri($self->controller()).URL::query(array('offset' => max(0, $self->offset() - $self->per_page()))), __('&laquo; Previous'));
 			}
 			else
 			{
-				$h('span', '&laquo; Previous');
+				$h('span', __('&laquo; Previous'));
 			}
 		});
 	}
@@ -59,11 +59,11 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 
 			if ($self->offset() < ($self->total() - $self->per_page()))
 			{
-				$h->anchor(Tart::uri($self->controller()).URL::query(array('offset' => $self->offset() + $self->per_page())), 'Next &raquo;');
+				$h->anchor(Tart::uri($self->controller()).URL::query(array('offset' => $self->offset() + $self->per_page())), __('Next &raquo;'));
 			}
 			else
 			{
-				$h('span', 'Next &raquo;');
+				$h('span', __('Next &raquo;'));
 			}
 		});
 	}
@@ -99,7 +99,7 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 						$h('span', array('style' => 'display:none'), function($h, $self){
 							$h('input', array('id' => 'pagination-slider', 'type' => 'range', 'class' => 'input-large', 'min' => 0, 'step' => $self->per_page(), 'value' => $self->offset(), 'max' => $self->total()));
 							$h('input', array('id' => 'pagination-input', 'type' => 'number', 'name' => 'offset', 'class' => 'input-mini', 'min' => 0, 'step' => $self->per_page(), 'value' => $self->offset(), 'max' => $self->total()));
-							$h('button', array('type' => 'submit', 'class' => 'btn'), 'Go');
+							$h('button', array('type' => 'submit', 'class' => 'btn'), __('Go'));
 						});
 					});
 

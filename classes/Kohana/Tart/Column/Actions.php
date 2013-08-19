@@ -82,8 +82,8 @@ abstract class Kohana_Tart_Column_Actions extends Tart_Column {
 					$params['controller'] = $self->controller();
 				}
 				
-				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'edit'))), 'Edit', array('class' => 'btn btn-small')));
-				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'delete'))), 'Delete', array('class' => 'btn btn-small btn-danger', 'data-confirm' => 'Are you sure you want to delete this '.$item->meta()->model().'?')));
+				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'edit'))), __('Edit'), array('class' => 'btn btn-small')));
+				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'delete'))), __('Delete'), array('class' => 'btn btn-small btn-danger', 'data-confirm' => __('Are you sure you want to delete this :item?', array(':item' => $item->meta()->model())))));
 			});
 		};
 	}

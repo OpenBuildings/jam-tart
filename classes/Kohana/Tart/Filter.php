@@ -105,7 +105,7 @@ abstract class Kohana_Tart_Filter extends Tart_Group {
 					}
 
 					$h('div.form-actions', function($h, $self) {
-						$h('button', array('class' => 'btn', 'tabindex' => count($self->items())), 'Go');
+						$h('button', array('class' => 'btn', 'tabindex' => count($self->items())), __('Go'));
 					});
 				
 			})

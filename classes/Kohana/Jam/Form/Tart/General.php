@@ -383,6 +383,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				'source' => Tart::uri('typeahead').'?model='.$model,
 				'new' => Tart::uri('typeahead', 'remoteselect_template').'?model='.$model.'&name={{name}}[]&id={{id}}&template='.$template,
 				'new_button' => NULL,
+				'search' => TRUE,
 				'template' => $template,
 				'list' => NULL,
 				'sortable' => NULL,
@@ -394,15 +395,17 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			$h('input', array('name' => $attributes['name'].'[]', 'type' => 'hidden', 'value' => ''));
 
 			$h('p', function($h) use ($name, $options) {
-				$h('input', array(
-					'type' => 'text',
-					'placeholder' => Arr::get($options, 'placeholder', 'Search for '.$options['label']),
-					'data-provide' => 'remoteselect',
-					'data-source' => $options['source'],
-					'data-container' => '#'.$options['container'],
-					'data-url' => $options['new'],
-				));
-
+				
+					$h('input', array(
+						'type' => 'text',
+						'placeholder' => Arr::get($options, 'placeholder', 'Search for '.$options['label']),
+						'data-provide' => 'remoteselect',
+						'data-source' => $options['source'],
+						'data-container' => '#'.$options['container'],
+						'data-url' => $options['new'],
+						'style' => $options['search'] ? '' : 'display:none'
+					));
+			
 				if ($options['new_button'])
 				{
 					$h('button', array('class' => 'btn', 'data-remoteselect-new' => $options['model']), $options['new_button']);

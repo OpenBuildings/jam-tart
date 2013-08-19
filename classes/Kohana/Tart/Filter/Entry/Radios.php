@@ -25,7 +25,7 @@ abstract class Kohana_Tart_Filter_Entry_Radios extends Tart_Filter_Entry {
 	public function render()
 	{
 		return Tart::form($this, function($h, $self){
-			$h('label', $self->label());
+			$h('label', __($self->label()));
 
 			$h->add($self->parent()->form()->radios($self->name(), array('choices' => $self->params(), 'include_blank' => $self->all())));
 		});
