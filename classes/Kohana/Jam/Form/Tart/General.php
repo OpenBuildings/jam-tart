@@ -246,7 +246,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				$h('a', array('href' => "#{$name}-form", 'class' => 'btn', 'data-multiform-add' => '#'.$attributes['id']), __('Add'));
 				$h('fieldset', array('disabled', 'class' => 'hide', 'id' => "{$name}-form"), function($h) use ($attributes) {
 					$h('input', array('type' => 'text', 'name' => $attributes['name'].'[0]', 'class' => Arr::get($attributes, 'class')));
-					$h('button', array('class' => 'btn', 'data-dismiss' => 'multiform'), 'Remove');
+					$h('button', array('class' => 'btn', 'data-dismiss' => 'multiform'), __('Remove'));
 				});
 			});
 		});

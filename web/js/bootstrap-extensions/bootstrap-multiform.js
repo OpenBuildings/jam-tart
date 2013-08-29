@@ -17,11 +17,11 @@
 		reindex: function()
 		{
 			var $element = this.$element;
+			var patt = new RegExp($element.attr('data-index').replace(/[\-\[\]\/\(\)\*\+\?\.\\\^\$\|]/g, "\\$&").replace('{{index}}', "(\\d+)"));
 
 			$element.children('.multiform').each(function(index){
 
-				$('input,select,textarea').each(function(){
-					var patt = new RegExp($element.attr('data-index').replace(/[\-\[\]\/\(\)\*\+\?\.\\\^\$\|]/g, "\\$&").replace('{{index}}', "(\\d+)"));
+				$(this).find('input,select,textarea').each(function(){
 					$(this).attr('name', $(this).attr('name').replace(patt, $element.attr('data-index').replace('{{index}}', index)));
 				});
 			});
