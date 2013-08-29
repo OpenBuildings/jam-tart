@@ -239,19 +239,19 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				foreach ( (array) $self->object()->$name as $index => $value) 
 				{
 					$h('div.multiform', function($h, $self) use ($attributes, $index, $value) {
-						$h('input', array('type' => 'text', 'name' => $attributes['name']."[{$index}]", 'value' => $value));
-						$h('button', array('class' => 'btn', 'data-dismiss' => 'multiform'), 'Remove');
+						$h('input', array('type' => 'text', 'name' => $attributes['name']."[{$index}]", 'value' => $value, 'class' => Arr::get($attributes, 'class')));
+						$h('button', array('class' => 'btn', 'data-dismiss' => 'multiform'), __('Remove'));
 					});
 				}
-				$h('a', array('href' => "#{$name}-form", 'class' => 'btn', 'data-multiform-add' => '#'.$attributes['id']), 'Add Rule');
+				$h('a', array('href' => "#{$name}-form", 'class' => 'btn', 'data-multiform-add' => '#'.$attributes['id']), __('Add'));
 				$h('fieldset', array('disabled', 'class' => 'hide', 'id' => "{$name}-form"), function($h) use ($attributes) {
-					$h('input', array('type' => 'text', 'name' => $attributes['name'].'[0]'));
+					$h('input', array('type' => 'text', 'name' => $attributes['name'].'[0]', 'class' => Arr::get($attributes, 'class')));
 					$h('button', array('class' => 'btn', 'data-dismiss' => 'multiform'), 'Remove');
 				});
 			});
 		});
 	}
-
+	
 	/**
 	 * A widget to enter a string value for a field, using typeahead. 
 	 * If its a model, uses :name_key for that model to dispaly the value
