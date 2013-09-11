@@ -17,7 +17,7 @@ $(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
 
-	$('a[data-toggle="tab"]').on('shown', function (e) {
+	$(document).on('shown', 'a[data-toggle="tab"]', function(e){
 		$($(e.target).attr('href')).removeAttr('disabled');
 		$($(e.relatedTarget).attr('href')).attr('disabled', 'disabled');
 	});
