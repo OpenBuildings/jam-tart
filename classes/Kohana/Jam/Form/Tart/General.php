@@ -419,9 +419,12 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 			$h('ul', array('class' => 'thumbnails', 'data-provide' => ($options['sortable'] ? 'sortable' : NULL), 'data-items' => ($options['sortable'] ? '> li.'.$options['sortable'] : NULL), 'data-tolerance' => 'pointer', 'data-placeholder' => 'sortable-placeholder thumbnail '.$options['sortable'], 'id' => $options['container']), function($h, $self) use ($name, $options, $attributes) {
 				
-				foreach ($self->object()->$name as $index => $item) 
+				if ($self->object()->$name AND count($self->object()->$name))
 				{
-					$h->add(View::factory($options['template'], array('name' => $attributes['name'].'[]', 'item' => $item, 'index' => $index, 'form' => $self->fields_for($name, $index))));
+					foreach ($self->object()->$name as $index => $item) 
+					{
+						$h->add(View::factory($options['template'], array('name' => $attributes['name'].'[]', 'item' => $item, 'index' => $index, 'form' => $self->fields_for($name, $index))));
+					}
 				}
 			});
 		})->render();	
