@@ -641,9 +641,9 @@ $(function () {
 		});
 
 		$(document).on('click.remoteselect.data-api', '[data-remoteselect-new]', function (e) {
-			var $this = $(this).siblings('[data-provide="remoteselect"]');
+			var $this = $($(this).attr('href')).length ? $($(this).attr('href')) : $(this).siblings('[data-provide="remoteselect"]');
 			e.preventDefault();
-			$this.remoteselect('add', null, $this.data('remoteselectNew'));
+			$this.remoteselect('add', null, $(this).data('remoteselectNew'));
 		});
 	});
 
