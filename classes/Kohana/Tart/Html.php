@@ -250,7 +250,7 @@ abstract class Kohana_Tart_Html {
 
 	public static function notifications()
 	{
-		if ($notifications = Session::instance()->get_once('notifications'))
+		if ($notifications = Session::instance()->get_once('tart.notifications'))
 		{
 			return Tart::html(NULL, function($h) use ($notifications) {
 				foreach ($notifications as $notification) 

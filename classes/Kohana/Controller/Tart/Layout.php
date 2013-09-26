@@ -62,10 +62,10 @@ abstract class Kohana_Controller_Tart_Layout extends Controller_Template {
 
 	public function notify($label, $message)
 	{
-		$notifications = Session::instance()->get('notifications', array());
+		$notifications = Session::instance()->get('tart.notifications', array());
 
 		$notifications[] = array('label' => $label, 'message' => $message);
-		Session::instance()->set('notifications', $notifications);
+		Session::instance()->set('tart.notifications', $notifications);
 	}
 
 	public function post($name = NULL)
