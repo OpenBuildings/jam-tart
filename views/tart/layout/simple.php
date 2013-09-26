@@ -9,6 +9,7 @@
 	</head>
 	<body>
 		<?php echo Tart_Html::navigation(array(Tart::uri('session', 'new') => 'Login')) ?>
+		<div class="visible-desktop nav-offseter"></div>
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<?php echo Tart_Html::notifications(); ?>

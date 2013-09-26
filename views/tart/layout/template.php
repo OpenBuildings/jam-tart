@@ -15,6 +15,7 @@
 	</head>
 	<body>
 		<?php echo Tart_Html::navigation(); ?>
+		<div class="visible-desktop nav-offseter"></div>
 		<div class="container-fluid">
 			<?php echo Tart_Html::notifications(); ?>
 			<div class="row-fluid">
