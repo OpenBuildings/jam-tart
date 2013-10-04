@@ -168,7 +168,8 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 		$attributes = Jam_Form::add_class($attributes, 'chzn-select');
 		$attributes['multiple'] = Arr::get($attributes, 'multiple', TRUE);
 		$attributes['name'] = $this->default_name($name).'[]';
-		return $this->select($name, $options, $attributes);
+		return Form::hidden($this->default_name($name))
+			.$this->select($name, $options, $attributes);
 	}
 
 	/**
