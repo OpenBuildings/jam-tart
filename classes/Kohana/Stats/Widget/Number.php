@@ -11,7 +11,7 @@ abstract class Kohana_Stats_Widget_Number extends Stats_Widget {
 
 	public function format($amount)
 	{
-		return number_format($amount, 0, '.', ',');
+		return $amount instanceof Jam_Price ? $amount->humanize() : number_format($amount, 0, '.', ',');
 	}
 	
 	public function render()

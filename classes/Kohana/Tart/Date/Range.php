@@ -82,7 +82,7 @@ abstract class Kohana_Tart_Date_Range {
 
 		if ( ! trim($this->_period))
 		{
-			$this->_period = round(abs($this->start() - $this->end()) / Date::DAY).' days';
+			$this->_period = (round(abs($this->start() - $this->end()) / Date::DAY) + 1).' days';
 		}
 		return $this->_period;
 	}

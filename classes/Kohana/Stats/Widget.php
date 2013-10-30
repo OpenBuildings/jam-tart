@@ -77,11 +77,17 @@ abstract class Kohana_Stats_Widget {
 
 	public static function percent_diff($a, $b)
 	{
+		$a = $a instanceof Jam_Price ? $a->amount() : $a;
+		$b = $b instanceof Jam_Price ? $b->amount() : $b;
+
 		return ($b > 0) ? (($a - $b) / $b) * 100 : 0;
 	}	
 
 	public static function to_percent($a, $b)
 	{
+		$a = $a instanceof Jam_Price ? $a->amount() : $a;
+		$b = $b instanceof Jam_Price ? $b->amount() : $b;
+
 		return ($b > 0) ? ($a / $b ) * 100 : 0;
 	}
 
