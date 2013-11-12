@@ -480,4 +480,14 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 		return $html;
 	}
+
+	public function country($name, array $options = array(), array $attributes = array(), $template = NULL)
+	{
+		$options = Arr::merge(array(
+			'choices' => Jam::all('location')->where('type', '=', 'country')->order_by('name')->as_array('id', 'name'),
+			'include_blank' => 'Select Country',
+		), $options);
+
+		return $this->select($name, $options, $attributes, $template);
+	}
 }
