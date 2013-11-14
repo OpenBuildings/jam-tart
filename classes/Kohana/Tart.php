@@ -100,7 +100,7 @@ abstract class Kohana_Tart {
 
 	public static function allowed($url, array $allowed = array(), array $disallowed = array())
 	{
-		foreach (array_filter($disallowed) as $rule) 
+		foreach (array_filter(array_diff($disallowed, $allowed)) as $rule) 
 		{
 			if (preg_match("#{$rule}#", $url))
 				return FALSE;
