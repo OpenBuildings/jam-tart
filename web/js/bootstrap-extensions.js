@@ -541,23 +541,31 @@ $(function () {
 		this.url = options.url;
 		this.count = options.count || $(options.container).children().length;
 		this.$container = $(options.container);
-		this.$element
-			.typeahead({
-				source: {
-					url: options.source,
-					dataType: 'json'
-				},
-				val: {},
-				itemSelected: function(item){
-					if (options.overwrite) {
-						$(options.container).empty();
-						$element.addClass('hide');
-					}
-					$element
-						.val('')
-						.remoteselect('add', item.id, item.model);
-				}
+		if (this.$element.is('select')) {
+			this.$element.on('change', function(){
+				$element
+					.remoteselect('add', $element.val(), null)
+					.val('');
 			});
+		} else {
+			this.$element
+				.typeahead({
+					source: {
+						url: options.source,
+						dataType: 'json'
+					},
+					val: {},
+					itemSelected: function(item){
+						if (options.overwrite) {
+							$(options.container).empty();
+							$element.addClass('hide');
+						}
+						$element
+							.val('')
+							.remoteselect('add', item.id, item.model);
+					}
+				});
+		}
 	};
 
 	Remoteselect.prototype = {
@@ -667,10 +675,10 @@ $(function () {
 
       var $this = this.element,
         $previous = $($this.data('previous')),
-        $target = $('#' + $this.val()),
+        $target = $('#' + $this.data('tabPrefix') + $this.val()),
         e,
         transition = $.support.transition && $target.hasClass('fade');
-
+       
       if ( $target.hasClass('active') ) return;
 
       e = $.Event('show', {
@@ -713,7 +721,7 @@ $(function () {
       }
 
       $previous.removeClass('in');
-      $this.data('previous', '#' + $this.val());
+      $this.data('previous', '#' + $this.data('tabPrefix') + $this.val());
     }
   };
 
