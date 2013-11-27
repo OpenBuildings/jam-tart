@@ -22,6 +22,14 @@ $(function(){
 		$($(e.relatedTarget).attr('href')).attr('disabled', 'disabled');
 	});
 
+	$(document).on('click', '*[data-toggle="enable"]', function(e){
+		$($(e.target).data('href')).each(function(){
+			$(this)
+				.toggleClass('muted')
+				.prop('disabled', ! $(this).prop('disabled'));
+		});
+	});
+
 	$('.accordion')
 		.on('shown', function (e) {
 			$(e.target).removeAttr('disabled');
@@ -57,7 +65,7 @@ $(function(){
 		if (e.target && ['a', 'button', 'input', 'select', 'textarea', 'label'].indexOf(e.target.nodeName.toLowerCase()) === -1)
 		{
 			$(this).closest('tr').first('td').find('input[type="checkbox"]').each(function(){
-				$(this).prop('checked', ! $(this).prop('checked'));
+				$(this).click();
 			});
 		}
 	});
