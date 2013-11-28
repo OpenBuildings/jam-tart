@@ -675,7 +675,7 @@ $(function () {
 
       var $this = this.element,
         $previous = $($this.data('previous')),
-        $target = $('#' + $this.data('tabPrefix') + $this.val()),
+        $target = $('#' + ($this.data('tabPrefix') || '') + $this.val()),
         e,
         transition = $.support.transition && $target.hasClass('fade');
        
@@ -721,7 +721,7 @@ $(function () {
       }
 
       $previous.removeClass('in');
-      $this.data('previous', '#' + $this.data('tabPrefix') + $this.val());
+      $this.data('previous', '#' + ($this.data('tabPrefix') || '') + $this.val());
     }
   };
 

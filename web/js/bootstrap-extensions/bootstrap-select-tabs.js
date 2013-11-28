@@ -18,10 +18,10 @@
 
       var $this = this.element,
         $previous = $($this.data('previous')),
-        $target = $('#' + $this.val()),
+        $target = $('#' + ($this.data('tabPrefix') || '') + $this.val()),
         e,
         transition = $.support.transition && $target.hasClass('fade');
-
+       
       if ( $target.hasClass('active') ) return;
 
       e = $.Event('show', {
@@ -64,7 +64,7 @@
       }
 
       $previous.removeClass('in');
-      $this.data('previous', '#' + $this.val());
+      $this.data('previous', '#' + ($this.data('tabPrefix') || '') + $this.val());
     }
   };
 
