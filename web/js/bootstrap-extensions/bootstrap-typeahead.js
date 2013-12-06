@@ -98,13 +98,19 @@ function ($) {
 
       filter: function(data) {
         var that = this,
-            items;
+	  items;
 
         items = $.grep(data, function (item) {
-          return ~item[that.options.display].toLowerCase().indexOf(that.query.toLowerCase());
+	  var query_items = that.query.toLowerCase().split(' '),
+	    data = item[that.options.display].toLowerCase();
+
+	  for (var i = query_items.length - 1; i >= 0; i--) {
+	    if (~data.indexOf(query_items[i]))
+	      return true;
+	  };
         });
 
-        if (!items || !items.length) {
+	if ( ! items || ! items.length) {
           return this.shown ? this.hide() : this;
         } else {
           items = items.slice(0, this.options.maxResults);
@@ -112,7 +118,6 @@ function ($) {
 
         return this.render(this.sorter(items)).show();
       },
-
       sorter: function (items) {
         var that = this,
             beginswith = [],

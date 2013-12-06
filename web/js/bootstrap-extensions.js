@@ -530,130 +530,140 @@ $(function () {
 
 }(window.jQuery);!function ($) {
 
-	"use strict"; // jshint ;_;
+    "use strict"; // jshint ;_;
 
 
  /* REMOTESELECT CLASS DEFINITION
-	* ==================== */
+    * ==================== */
 
-	var Remoteselect = function (element, options) {
-		var $element = this.$element = $(element);
-		this.url = options.url;
-		this.count = options.count || $(options.container).children().length;
-		this.$container = $(options.container);
-		if (this.$element.is('select')) {
-			this.$element.on('change', function(){
-				$element
-					.remoteselect('add', $element.val(), null)
-					.val('');
-			});
-		} else {
-			this.$element
-				.typeahead({
-					source: {
-						url: options.source,
-						dataType: 'json'
-					},
-					val: {},
-					itemSelected: function(item){
-						if (options.overwrite) {
-							$(options.container).empty();
-							$element.addClass('hide');
-						}
-						$element
-							.val('')
-							.remoteselect('add', item.id, item.model);
-					}
-				});
+    var Remoteselect = function (element, options) {
+	var $element = this.$element = $(element);
+	this.url = options.url;
+	this.templatestring = options.templatestring;
+	this.count = options.count || $(options.container).children().length;
+	this.$container = $(options.container);
+	this.$element
+	    .typeahead({
+		source: options.source,
+		val: {},
+		itemSelected: function(item){
+		    if (options.overwrite) {
+			$(options.container).empty();
+			$element.addClass('hide');
+		    }
+		    $element
+			.val('')
+			.remoteselect('add', item);
 		}
-	};
+	    });
+    };
 
-	Remoteselect.prototype = {
+    Remoteselect.prototype = {
 
-		constructor: Remoteselect,
+	constructor: Remoteselect,
 
-		add: function(id, model)
-		{
-			var $container = this.$container;
+	add: function(item)
+	{
+	    var $container = this.$container;
 
-			$.get(this.url.replace('{{id}}', id).replace('{{count}}', this.count++).replace('{{model}}', model), function(data){
-				$container.append(data);
-				$(".chzn-select").chosen();
-			});
-		}
-	};
+	    if (this.templatestring) {
+		$container.append(
+		    this.templatestring
+			.replace(/\{\{id\}\}/g, item.id)
+			.replace(/\{\{count\}\}/g, this.count++)
+			.replace(/\{\{model\}\}/g, item.model)
+			.replace(/\{\{name\}\}/g, item.name)
+			.replace(/\{\{price\}\}/g, item.price)
+			.replace(/\{\{variations\}\}/g, item.variations)
+			.replace(/\{\{url\}\}/g, item.url)
+		);
+		$(".chzn-select").chosen();
+	    } else {
+		$.get(
+		    this.url
+			.replace(/\{\{id\}\}/g, item.id)
+			.replace(/\{\{count\}\}/g, this.count++)
+			.replace(/\{\{model\}\}/g, item.model),
+		    function(data){
+			$container.append(data);
+			$(".chzn-select").chosen();
+		    }
+		);
+	    }
+	}
+    };
 
 
  /* REMOTESELECT PLUGIN DEFINITION
-	* ===================== */
+    * ===================== */
 
-	var old = $.fn.remoteselect;
+    var old = $.fn.remoteselect;
 
-	$.fn.remoteselect = function (option, param, param2) {
-		return this.each(function () {
-			var $this = $(this),
-					data = $this.data('remoteselect'),
-					options = typeof option === 'object' && option;
+    $.fn.remoteselect = function (option, param, param2) {
+	return this.each(function () {
+	    var $this = $(this),
+		    data = $this.data('remoteselect'),
+		    options = typeof option === 'object' && option;
 
-			if (!data) {
-				$this.data('remoteselect', (data = new Remoteselect(this, options || $this.data())));
-			}
+	    if (!data) {
+		$this.data('remoteselect', (data = new Remoteselect(this, options || $this.data())));
+	    }
 
-			if (typeof option === 'string') {
-				data[option](param, param2);
-			}
-		});
-	};
+	    if (typeof option === 'string') {
+		data[option](param, param2);
+	    }
+	});
+    };
 
-	$.fn.remoteselect.Constructor = Remoteselect;
+    $.fn.remoteselect.Constructor = Remoteselect;
 
 
  /* REMOTESELECT NO CONFLICT
-	* =============== */
+    * =============== */
 
-	$.fn.remoteselect.noConflict = function () {
-		$.fn.remoteselect = old;
-		return this;
-	};
+    $.fn.remoteselect.noConflict = function () {
+	$.fn.remoteselect = old;
+	return this;
+    };
 
 
  /* REMOTESELECT DATA-API
-	* ============ */
+    * ============ */
 
-	$(function () {
-		$(document).on('focus.remoteselect.data-api', '[data-provide="remoteselect"]', function (e) {
-			var $this = $(this);
-			if ($this.data('remoteselect')) return;
-			e.preventDefault();
-			$this.remoteselect($this.data());
-		});
-
-		$(document).on('click.remoteselect.data-api', '[data-dismiss="remoteselect"]', function (e) {
-			var item = $(this).closest('.remoteselect-item');
-
-			e.preventDefault();
-
-			function removeItem()
-			{
-				$('input[data-container="#'+item.parent().attr('id')+'"]').removeClass('hide').addClass('in');
-				item.remove();
-			}
-
-			if ($.support.transition) {
-				item.addClass('fade').on($.support.transition.end, removeItem);
-			}
-			else
-			{
-				removeItem();
-			}
-		});
-
-		$(document).on('click.remoteselect.data-api', '[data-remoteselect-new]', function (e) {
-			var $this = $($(this).attr('href')).length ? $($(this).attr('href')) : $(this).siblings('[data-provide="remoteselect"]');
-			e.preventDefault();
-			$this.remoteselect('add', null, $(this).data('remoteselectNew'));
-		});
+    $(function () {
+	$(document).on('focus.remoteselect.data-api', '[data-provide="remoteselect"]', function (e) {
+	    var $this = $(this);
+	    if ($this.data('remoteselect')) return;
+	    e.preventDefault();
+	    $this.remoteselect($this.data());
 	});
+
+	$(document).on('click.remoteselect.data-api', '[data-dismiss="remoteselect"]', function (e) {
+	    var item = $(this).closest('.remoteselect-item');
+
+	    e.preventDefault();
+
+	    function removeItem()
+	    {
+		$('input[data-container="#'+item.parent().attr('id')+'"]').removeClass('hide').addClass('in');
+		item.remove();
+	    }
+
+	    if ($.support.transition) {
+		item.addClass('fade').on($.support.transition.end, removeItem);
+	    }
+	    else
+	    {
+		removeItem();
+	    }
+	});
+
+	$(document).on('click.remoteselect.data-api', '[data-remoteselect-new]', function (e) {
+	    var $this = $($(this).attr('href')).length ? $($(this).attr('href')) : $(this).siblings('[data-provide="remoteselect"]');
+	    e.preventDefault();
+	    $this.remoteselect('add', null, $(this).data('remoteselectNew'));
+	});
+    });
 
 }(window.jQuery);!function ($) {
 
@@ -811,290 +821,289 @@ function ($) {
 
       initSource: function() {
 
-        if (this.options.source) {
-          if (typeof this.options.source === 'string') {
-           this.source = $.extend({}, $.ajaxSettings, { url: this.options.source })
-          } else if (typeof this.options.source === 'object') {
-            if (this.options.source instanceof Array) {
-              this.source = this.options.source;
-            } else {
-              this.source = $.extend(true, {}, $.ajaxSettings, this.options.source);
-            }
-          }
-        }
+	if (this.options.source) {
+	  if (typeof this.options.source === 'string') {
+	   this.source = $.extend({}, $.ajaxSettings, { url: this.options.source })
+	  } else if (typeof this.options.source === 'object') {
+	    if (this.options.source instanceof Array) {
+	      this.source = this.options.source;
+	    } else {
+	      this.source = $.extend(true, {}, $.ajaxSettings, this.options.source);
+	    }
+	  }
+	}
       },
 
       eventSupported: function(eventName) {
-        var isSupported = (eventName in this.$element);
+	var isSupported = (eventName in this.$element);
 
-        if (!isSupported) {
-          this.$element.setAttribute(eventName, 'return;');
-          isSupported = typeof this.$element[eventName] === 'function';
-        }
+	if (!isSupported) {
+	  this.$element.setAttribute(eventName, 'return;');
+	  isSupported = typeof this.$element[eventName] === 'function';
+	}
 
-        return isSupported;
+	return isSupported;
       },
 
       lookup: function (event) {
-        var that = this,
-            items;
+	var that = this,
+	    items;
 
-        this.query = this.$element.val();
-        if (!this.query || this.query.length < this.options.minLength) {
-          return this.shown ? this.hide() : this;
-        }
+	this.query = this.$element.val();
+	if (!this.query || this.query.length < this.options.minLength) {
+	  return this.shown ? this.hide() : this;
+	}
 
-        if (this.source.url) {
-          if (this.xhr) this.xhr.abort();
+	if (this.source.url) {
+	  if (this.xhr) this.xhr.abort();
 
-          this.xhr = $.ajax(
-            $.extend({}, this.source, {
-              data: { query: that.query },
-              success: $.proxy(that.filter, that)
-            })
-          );
-        } else {
-          items = $.proxy(that.filter(that.source), that);
-        }
+	  this.xhr = $.ajax(
+	    $.extend({}, this.source, {
+	      data: { query: that.query },
+	      success: $.proxy(that.filter, that)
+	    })
+	  );
+	} else {
+	  items = $.proxy(that.filter(that.source), that);
+	}
       },
 
       filter: function(data) {
-        var that = this,
-            items;
+	var that = this,
+	  items;
 
-        items = $.grep(data, function (item) {
-        	var query_items = that.query.toLowerCase().split(' '),
-        	    data = item[that.options.display].toLowerCase();
+	items = $.grep(data, function (item) {
+	  var query_items = that.query.toLowerCase().split(' '),
+	    data = item[that.options.display].toLowerCase();
 
-        	for (var i = query_items.length - 1; i >= 0; i--) {
-        		if (~data.indexOf(query_items[i]))
-        			return true;
-        	};
-        });
+	  for (var i = query_items.length - 1; i >= 0; i--) {
+	    if (~data.indexOf(query_items[i]))
+	      return true;
+	  };
+	});
 
-        if (!items || !items.length) {
-          return this.shown ? this.hide() : this;
-        } else {
-          items = items.slice(0, this.options.maxResults);
-        }
+	if ( ! items || ! items.length) {
+	  return this.shown ? this.hide() : this;
+	} else {
+	  items = items.slice(0, this.options.maxResults);
+	}
 
-        return this.render(this.sorter(items)).show();
+	return this.render(this.sorter(items)).show();
       },
-
       sorter: function (items) {
-        var that = this,
-            beginswith = [],
-            caseSensitive = [],
-            caseInsensitive = [],
-            item;
+	var that = this,
+	    beginswith = [],
+	    caseSensitive = [],
+	    caseInsensitive = [],
+	    item;
 
-        while (item = items.shift()) {
-          if (!item[that.options.display].toLowerCase().indexOf(this.query.toLowerCase())) {
-            beginswith.push(item);
-          } else if (~item[that.options.display].indexOf(this.query)) {
-            caseSensitive.push(item);
-          } else {
-            caseInsensitive.push(item);
-          }
-        }
+	while (item = items.shift()) {
+	  if (!item[that.options.display].toLowerCase().indexOf(this.query.toLowerCase())) {
+	    beginswith.push(item);
+	  } else if (~item[that.options.display].indexOf(this.query)) {
+	    caseSensitive.push(item);
+	  } else {
+	    caseInsensitive.push(item);
+	  }
+	}
 
-        return beginswith.concat(caseSensitive, caseInsensitive);
+	return beginswith.concat(caseSensitive, caseInsensitive);
       },
 
       show: function () {
-        var pos = $.extend({}, this.$element.offset(), {
-            height: this.$element[0].offsetHeight
-        });
+	var pos = $.extend({}, this.$element.offset(), {
+	    height: this.$element[0].offsetHeight
+	});
 
-        this.$menu.css({
-            top: pos.top + pos.height,
-            left: pos.left
-        });
+	this.$menu.css({
+	    top: pos.top + pos.height,
+	    left: pos.left
+	});
 
-        this.$menu.show();
-        this.shown = true;
-        return this;
+	this.$menu.show();
+	this.shown = true;
+	return this;
       },
 
       hide: function () {
-        this.$menu.hide();
-        this.shown = false;
-        return this;
+	this.$menu.hide();
+	this.shown = false;
+	return this;
       },
 
       highlighter: function (text) {
-        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-        return text.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-          return '<strong>' + match + '</strong>';
-        });
+	var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+	return text.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+	  return '<strong>' + match + '</strong>';
+	});
       },
 
       render: function (items) {
 
-        var that = this,
-          $templateItem,
-          $standardItem;
+	var that = this,
+	  $templateItem,
+	  $standardItem;
 
-        items = $(items).map(function (i, item) {
-            if (that.options.tmpl) {
-              i = $(that.options.tmpl(item));
-            } else {
-              i = $(that.options.item);
-            }
+	items = $(items).map(function (i, item) {
+	    if (that.options.tmpl) {
+	      i = $(that.options.tmpl(item));
+	    } else {
+	      i = $(that.options.item);
+	    }
 
-            if (typeof that.options.val === 'string') {
-              i.attr('data-value', item[that.options.val]);
-            } else {
-              i.attr('data-value', JSON.stringify($.extend({}, that.options.val, item)))
-            }
+	    if (typeof that.options.val === 'string') {
+	      i.attr('data-value', item[that.options.val]);
+	    } else {
+	      i.attr('data-value', JSON.stringify($.extend({}, that.options.val, item)))
+	    }
 
-            // Modification to allow html templates
-            $templateItem = item[that.options.display];
-            $standardItem = i.find('a');
+	    // Modification to allow html templates
+	    $templateItem = item[that.options.display];
+	    $standardItem = i.find('a');
 
-            if ($templateItem.indexOf('typeahead-display-val') > 0) {
-              $standardItem.html($templateItem).find('.typeahead-display-val').each(function(){
-                $(this).html(that.highlighter($(this).html()));
-              });
-            }
-            else {
-              $standardItem.html(that.highlighter($templateItem));
-            }
+	    if ($templateItem.indexOf('typeahead-display-val') > 0) {
+	      $standardItem.html($templateItem).find('.typeahead-display-val').each(function(){
+		$(this).html(that.highlighter($(this).html()));
+	      });
+	    }
+	    else {
+	      $standardItem.html(that.highlighter($templateItem));
+	    }
 
-            return i[0];
+	    return i[0];
 
-            // End Modification to allow html templates
+	    // End Modification to allow html templates
 
 
-            $templateItem = i.find('.typeahead-display-val');
-            $standardItem = i.find('a');
+	    $templateItem = i.find('.typeahead-display-val');
+	    $standardItem = i.find('a');
 
-            if ($templateItem.length) {
-              $templateItem.html(that.highlighter(item[that.options.display]))
-            } else if ($standardItem.length) {
-              $standardItem.html(that.highlighter(item[that.options.display]));
-            }
+	    if ($templateItem.length) {
+	      $templateItem.html(that.highlighter(item[that.options.display]))
+	    } else if ($standardItem.length) {
+	      $standardItem.html(that.highlighter(item[that.options.display]));
+	    }
 
-            return i[0];
-        });
+	    return i[0];
+	});
 
-        items.first().addClass('active');
+	items.first().addClass('active');
 
-        setTimeout(function() {
-          that.$menu.html(items);
-        }, 250)
+	setTimeout(function() {
+	  that.$menu.html(items);
+	}, 250)
 
-        return this;
+	return this;
       },
 
       select: function () {
-        var $selectedItem = this.$menu.find('.active');
-        this.$element.val($selectedItem.text()).change();
-        this.options.itemSelected(JSON.parse($selectedItem.attr('data-value')));
-        return this.hide();
+	var $selectedItem = this.$menu.find('.active');
+	this.$element.val($selectedItem.text()).change();
+	this.options.itemSelected(JSON.parse($selectedItem.attr('data-value')));
+	return this.hide();
       },
 
       next: function (event) {
-        var active = this.$menu.find('.active').removeClass('active');
-        var next = active.next();
+	var active = this.$menu.find('.active').removeClass('active');
+	var next = active.next();
 
-        if (!next.length) {
-          next = $(this.$menu.find('li')[0]);
-        }
+	if (!next.length) {
+	  next = $(this.$menu.find('li')[0]);
+	}
 
-        next.addClass('active');
+	next.addClass('active');
       },
 
       prev: function (event) {
-        var active = this.$menu.find('.active').removeClass('active');
-        var prev = active.prev();
+	var active = this.$menu.find('.active').removeClass('active');
+	var prev = active.prev();
 
-        if (!prev.length) {
-          prev = this.$menu.find('li').last();
-        }
+	if (!prev.length) {
+	  prev = this.$menu.find('li').last();
+	}
 
-        prev.addClass('active');
+	prev.addClass('active');
       },
 
       listen: function () {
-          this.$element
-            .on('blur', $.proxy(this.blur, this))
-            .on('keyup', $.proxy(this.keyup, this));
+	  this.$element
+	    .on('blur', $.proxy(this.blur, this))
+	    .on('keyup', $.proxy(this.keyup, this));
 
-          if (this.eventSupported('keydown')) {
-            this.$element.on('keydown', $.proxy(this.keypress, this));
-          } else {
-            this.$element.on('keypress', $.proxy(this.keypress, this));
-          }
+	  if (this.eventSupported('keydown')) {
+	    this.$element.on('keydown', $.proxy(this.keypress, this));
+	  } else {
+	    this.$element.on('keypress', $.proxy(this.keypress, this));
+	  }
 
-          this.$menu
-            .on('click', $.proxy(this.click, this))
-            .on('mouseenter', 'li', $.proxy(this.mouseenter, this));
+	  this.$menu
+	    .on('click', $.proxy(this.click, this))
+	    .on('mouseenter', 'li', $.proxy(this.mouseenter, this));
       },
 
       keyup: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+	e.stopPropagation();
+	e.preventDefault();
 
-        switch (e.keyCode) {
-          case _keyCodes.DOWN:
-          case _keyCodes.UP:
-             break;
-          case _keyCodes.TAB:
-          case _keyCodes.ENTER:
-            if (!this.shown) return;
-            this.select();
-            break;
-          case _keyCodes.ESCAPE:
-            this.hide();
-            break;
-          default:
-            this.lookup();
-        }
+	switch (e.keyCode) {
+	  case _keyCodes.DOWN:
+	  case _keyCodes.UP:
+	     break;
+	  case _keyCodes.TAB:
+	  case _keyCodes.ENTER:
+	    if (!this.shown) return;
+	    this.select();
+	    break;
+	  case _keyCodes.ESCAPE:
+	    this.hide();
+	    break;
+	  default:
+	    this.lookup();
+	}
       },
 
       keypress: function (e) {
-        e.stopPropagation();
+	e.stopPropagation();
 
-        if (!this.shown) return;
+	if (!this.shown) return;
 
-        switch (e.keyCode) {
-          case _keyCodes.TAB:
-          case _keyCodes.ESCAPE:
-          case _keyCodes.ENTER:
-            e.preventDefault();
-            break;
-          case _keyCodes.UP:
-            e.preventDefault();
-            this.prev();
-            break;
-          case _keyCodes.DOWN:
-            e.preventDefault();
-            this.next();
-            break;
-        }
+	switch (e.keyCode) {
+	  case _keyCodes.TAB:
+	  case _keyCodes.ESCAPE:
+	  case _keyCodes.ENTER:
+	    e.preventDefault();
+	    break;
+	  case _keyCodes.UP:
+	    e.preventDefault();
+	    this.prev();
+	    break;
+	  case _keyCodes.DOWN:
+	    e.preventDefault();
+	    this.next();
+	    break;
+	}
       },
 
       blur: function (e) {
-        var that = this;
-        e.stopPropagation();
-        e.preventDefault();
-        setTimeout(function () {
-          if (!that.$menu.is(':focus')) {
-            that.hide();
-          }
-        }, 150);
+	var that = this;
+	e.stopPropagation();
+	e.preventDefault();
+	setTimeout(function () {
+	  if (!that.$menu.is(':focus')) {
+	    that.hide();
+	  }
+	}, 150);
       },
 
       click: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        this.select();
+	e.stopPropagation();
+	e.preventDefault();
+	this.select();
       },
 
       mouseenter: function (e) {
-        this.$menu.find('.active').removeClass('active');
-        $(e.currentTarget).addClass('active');
+	this.$menu.find('.active').removeClass('active');
+	$(e.currentTarget).addClass('active');
       }
   }
 
@@ -1102,15 +1111,15 @@ function ($) {
   $.fn.typeahead = function (option) {
     return this.each(function () {
       var $this = $(this),
-          data = $this.data('typeahead'),
-          options = typeof option === 'object' && option;
+	  data = $this.data('typeahead'),
+	  options = typeof option === 'object' && option;
 
       if (!data) {
-          $this.data('typeahead', (data = new Typeahead(this, options)));
+	  $this.data('typeahead', (data = new Typeahead(this, options)));
       }
 
       if (typeof option === 'string') {
-          data[option]();
+	  data[option]();
       }
     });
   }
