@@ -386,6 +386,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				'new_button' => NULL,
 				'search' => TRUE,
 				'template' => $template,
+				'templatestring' => Arr::get($options, 'templatestring', ''),
 				'list' => NULL,
 				'sortable' => NULL,
 				'label' => strtolower(Inflector::humanize($name)),
@@ -395,15 +396,17 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 			$h('input', array('name' => $attributes['name'].'[]', 'type' => 'hidden', 'value' => ''));
 
-			$h('p', function($h) use ($name, $options) {
+			$h('p', function($h) use ($name, $options, $attributes) {
 				
 					$h('input', array(
+						'id' => $attributes['id'],
 						'type' => 'text',
 						'placeholder' => Arr::get($options, 'placeholder', 'Search for '.$options['label']),
-						'data-provide' => 'remoteselect',
+						'data-provide' => Arr::get($options, 'provide', 'remoteselect'),
 						'data-source' => $options['source'],
 						'data-container' => '#'.$options['container'],
 						'data-url' => $options['new'],
+						'data-templatestring' => $options['templatestring'],
 						'style' => $options['search'] ? '' : 'display:none'
 					));
 			
