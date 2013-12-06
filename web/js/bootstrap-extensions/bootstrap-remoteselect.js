@@ -40,11 +40,11 @@
 		$container.append(
 		    this.templatestring
 			.replace(/\{\{id\}\}/g, item.id)
+			.replace(/\{\{variations\}\}/g, item.variations)
 			.replace(/\{\{count\}\}/g, this.count++)
 			.replace(/\{\{model\}\}/g, item.model)
 			.replace(/\{\{name\}\}/g, item.name)
 			.replace(/\{\{price\}\}/g, item.price)
-			.replace(/\{\{variations\}\}/g, item.variations)
 			.replace(/\{\{url\}\}/g, item.url)
 		);
 		$(".chzn-select").chosen();
