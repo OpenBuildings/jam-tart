@@ -1,4 +1,6 @@
-
+.tab-content {
+  overflow: inherit;
+}
 .nav-offseter {
   height: 60px;
 }
