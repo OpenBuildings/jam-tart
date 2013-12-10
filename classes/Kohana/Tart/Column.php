@@ -144,6 +144,9 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 		}
 		elseif ($field instanceof Jam_Field_Timestamp)
 		{
+			if ( ! $value) 
+				return '-';
+			
 			$time = is_numeric($value) ? $value : strtotime($value);
 			return '<span title="'.date('j M Y', $time).'">'.Tart_Html::date_span($time).'</span>';
 		}
