@@ -562,8 +562,7 @@ Remoteselect.prototype = {
 
 	constructor: Remoteselect,
 
-	add: function(item)
-	{
+	add: function(item) {
 		var $container = this.$container;
 
 		if (this.templatestring) {
@@ -578,12 +577,12 @@ Remoteselect.prototype = {
 				.replace(/\{\{url\}\}/g, item.url)
 			);
 			$(".chzn-select").chosen();
-		} else if (item) {
+		} else {
 			$.get(
 				this.url
-					.replace(/\{\{id\}\}/g, item.id)
+					.replace(/\{\{id\}\}/g, item ? item.id : '')
 					.replace(/\{\{count\}\}/g, this.count++)
-					.replace(/\{\{model\}\}/g, item.model),
+					.replace(/\{\{model\}\}/g, item ? item.model : ''),
 				function(data){
 					$container.append(data);
 					$(".chzn-select").chosen();
