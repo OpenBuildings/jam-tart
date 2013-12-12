@@ -85,6 +85,16 @@ $(function(){
 			}).success(function() { $('input:text:visible:first').focus(); });
 		}
 	});
+	
+	$('body').on('change', 'select[data-select-custom]', function(){
+		if ($(this).val() == 'custom') {
+			$($(this).data('select-custom')).addClass('in').removeAttr('disabled');
+		}
+		else
+		{
+			$($(this).data('select-custom')).removeClass('in').attr('disabled', 'disabled');
+		}
+	})
 
 	$('body').on('submit', 'form[data-provide="async"]', function(e){
 		var $form = $(this);
