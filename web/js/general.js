@@ -50,7 +50,7 @@ $(function(){
 
 	$(".chzn-select").chosen();
 
-	$("li[data-load-remote]").each(function() {
+	$("*[data-load-remote]").each(function() {
 		$(this)
 			.addClass('progress')
 			.load($(this).data('loadRemote'), function(content, textStatus) {
