@@ -73,7 +73,8 @@ class Jamtart_ColumnTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('Really really big and coprehansive&nbsp;text…', $rendered);
 
 		$rendered = $column->name('created_at')->render();
-		$this->assertEquals('<span title="1 Jan 2000">13 years ago</span>', $rendered);
+		$year_diff = ( (int) date('Y')) - ( (int) date('Y', $this->city->created_at));
+		$this->assertEquals('<span title="1 Jan 2000">'.$year_diff.' years ago</span>', $rendered);
 
 		$rendered = $column->name('url')->render();
 		$this->assertEquals('http://example.com/ths-is-a-ve…&nbsp;<a href="http://example.com/ths-is-a-very-lon-url/and-should-be-shortend" target="_blank"><i class="icon-share-alt"></i></a>', $rendered);
