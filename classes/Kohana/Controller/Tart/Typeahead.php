@@ -36,6 +36,7 @@ abstract class Kohana_Controller_Tart_Typeahead extends Controller {
 			$response = array_merge($response, $model_response);
 		}
 
+		$this->response->headers('Content-Type', 'application/json');
 		$this->response->body(json_encode($response));
 	}
 
@@ -46,6 +47,8 @@ abstract class Kohana_Controller_Tart_Typeahead extends Controller {
 		$names = Jam::all($model)
 			->where(':name_key', 'LIKE', "%{$q}%")
 			->limit(5);
+
+		$this->response->headers('Content-Type', 'application/json');
 		$this->response->body(json_encode($names->as_array(NULL, ':name_key')));
 	}
 
