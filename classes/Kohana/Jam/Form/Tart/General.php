@@ -412,7 +412,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			
 				if ($options['new_button'])
 				{
-					$h('button', array('class' => 'btn', 'data-remoteselect-new' => $options['model']), $options['new_button']);
+					$h('button', array('type' => 'button', 'class' => 'btn', 'data-remoteselect-new' => $options['model']), $options['new_button']);
 				}
 
 				if ($options['list'])
