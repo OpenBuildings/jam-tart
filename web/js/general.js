@@ -75,7 +75,7 @@ $(function(){
 	});
 
 	$('body').on('change', 'input[name="all"]', function(e){
-		$(this).closest('table').find('tbody > tr > td:first-child input[name="id[]"]').prop('checked', $(this).prop('checked'));
+		$(this).closest('table').find('tbody > tr > td:first-child input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 	});
 
 	$('body').on('click', '[data-toggle="modal"]', function(e) {
