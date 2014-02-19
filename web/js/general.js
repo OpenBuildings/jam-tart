@@ -62,9 +62,12 @@ $(function(){
 	});
 
 	$('body').on('click', 'td', function(e) {
+		if ($(e.target).closest('table table').length) {
+			e.stopPropagation();
+		}
+
 		if (e.target && ['a', 'button', 'input', 'select', 'textarea', 'label'].indexOf(e.target.nodeName.toLowerCase()) === -1)
 		{
-			e.stopPropagation();
 			$(this).closest('tr').children('td:first').find('input[type="checkbox"]').each(function(){
 				$(this).click();
 			});
