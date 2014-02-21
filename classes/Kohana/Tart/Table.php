@@ -11,8 +11,8 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 
 	protected $_footer;
 	protected $_attributes = array('class' => 'table table-striped table-hover');
-	
-	function __construct($collection = array(), array $items = array()) 
+
+	function __construct($collection = array(), array $items = array())
 	{
 		$this->collection($collection);
 		$this->items($items);
@@ -27,7 +27,7 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 	{
 		if ($key === NULL)
 			return $this->_attributes;
-	
+
 		if (is_array($key))
 		{
 			$this->_attributes = $key;
@@ -36,10 +36,10 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 		{
 			if ($value === NULL)
 				return Arr::get($this->_attributes, $key);
-	
+
 			$this->_attributes[$key] = $value;
 		}
-	
+
 		return $this;
 	}
 
@@ -65,7 +65,7 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 							$h('input', array('type' => 'checkbox', 'name' => 'all', 'value' => '1', 'checked' => array_diff($self->collection()->ids(), $self->selected()) ? NULL : 'checked'));
 						});
 					}
-					foreach ($self->columns() as $column) 
+					foreach ($self->columns() as $column)
 					{
 						$h('th', array('width' => $column->width()), $column->label());
 					}
@@ -96,6 +96,34 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 			});
 		});
 		return $html->render();
+	}
+
+	public function to_csv()
+	{
+		if ( ! ($handle = fopen('php://output', 'w+')))
+			throw new Kohana_Exception('Cannot open php://output for writing');
+
+		ob_start();
+		fputcsv($handle, array_keys($this->columns()));
+
+		foreach ($this->collection() as $index => $item)
+		{
+			$values = array();
+			$index = 0;
+
+			foreach ($this->columns() as $column)
+			{
+				$values[] = Text::to_plain($column->index($index++)->item($item)->render());
+			}
+
+			fputcsv($handle, $values);
+		}
+
+		$csv = ob_get_contents();
+		ob_clean();
+		fclose($handle);
+
+		return $csv;
 	}
 
 	public function columns($name = NULL, $value = NULL)
