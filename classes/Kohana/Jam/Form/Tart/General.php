@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * All the widgets needed for the admin. 
+ * All the widgets needed for the admin.
  * If you feel the need for extra widgets, you can extend this class in your module
  *
  * @package Jam tart
@@ -31,7 +31,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			$choices = $choices->visible($visible);
 		}
 		$choices_list = array();
-		foreach ($choices as $choice) 
+		foreach ($choices as $choice)
 		{
 			$choices_list[$choice->id] = $choice->parent ? ($choice->parent->name(). ' / '.$choice->name()) : $choice->name();
 		}
@@ -42,10 +42,10 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 	 * Generate a row. Extends the default generator
 	 * @param  string $type       the name of the widget
 	 * @param  string $name       the name of the field
-	 * @param  array  $options    array can include 'label', 'help' and 'clear' all other options are passed to the widget 
-	 * @param  array  $attributes array 
+	 * @param  array  $options    array can include 'label', 'help' and 'clear' all other options are passed to the widget
+	 * @param  array  $attributes array
 	 * @param  string $template   override the template
-	 * @return string             
+	 * @return string
 	 */
 	public function row($type, $name, array $options = array(), array $attributes = array(), $template = NULL)
 	{
@@ -71,7 +71,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 						}
 						$h->add(call_user_func(array($self, $type), $name, $options, $attributes));
 					}));
-					
+
 					$h->add($errors);
 					if (isset($options['help']))
 					{
@@ -92,12 +92,12 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * The same as row, but places the input and label inline
-	 * @param  string $type       
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @param  string $template   
-	 * @return string             
+	 * @param  string $type
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @param  string $template
+	 * @return string
 	 */
 	public function row_inline($type, $name, array $options = array(), array $attributes = array(), $template = NULL)
 	{
@@ -127,8 +127,8 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * Return the html for the errors for a given field
-	 * @param string $name 
-	 * @return string 
+	 * @param string $name
+	 * @return string
 	 */
 	public function errors($name)
 	{
@@ -138,14 +138,14 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * Get a chozen select for vocabulary.
-	 * 
+	 *
 	 * Options
 	 *  - vocabulary: string|array, required
-	 *  
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 *
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function taxonomy($name, array $options = array(), array $attributes = array())
 	{
@@ -155,10 +155,10 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 		if (is_array($options['vocabulary']))
 		{
 			$choices = array();
-			foreach ($options['vocabulary'] as $vocabulary) 
+			foreach ($options['vocabulary'] as $vocabulary)
 			{
 				$choices[$vocabulary] = Jam_Form_Tart_General::list_vocabulary_choices($vocabulary, Arr::get($options, 'visible', TRUE));
-			}	
+			}
 		}
 		else
 		{
@@ -174,15 +174,15 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * A widget to upload an image
-	 * 
+	 *
 	 * Options:
 	 * 	- remove: boolean, add a "remove" button, defaults true
 	 * 	- thumbnail: string, the name of the thumbnail to display, if not set uses the full image
-	 * 	
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 *
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function upload($name, array $options = array(), array $attributes = array())
 	{
@@ -216,7 +216,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 				if ($remove)
 				{
-					$h('a', array('href' => '#', 'class' => 'btn fileupload-exists', 'data-dismiss' => 'fileupload'), 'Remove');
+					$h('a', array('href' => '#', 'class' => 'btn fileupload-exists', 'data-dismiss' => 'fileupload'), __('Remove'));
 				}
 			});
 		})->render();
@@ -224,11 +224,11 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * A widget used to input an array of string values, usually stored on a serialized field
-	 * 
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 *
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function input_array($name, array $options = array(), array $attributes = array())
 	{
@@ -237,7 +237,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 		return Tart::html($this, function($h) use ($name, $attributes) {
 			$h('div', array('id' => $attributes['id'], 'data-index' => $attributes['name'].'[{{index}}]'), function($h, $self) use ($name, $attributes) {
 				$h('input', array('type' => 'hidden', 'name' => $attributes['name'].'[]', 'value' => ''));
-				foreach ( (array) $self->object()->$name as $index => $value) 
+				foreach ( (array) $self->object()->$name as $index => $value)
 				{
 					$h('div.multiform', function($h, $self) use ($attributes, $index, $value) {
 						$h('input', array('type' => 'text', 'name' => $attributes['name']."[{$index}]", 'value' => $value, 'class' => Arr::get($attributes, 'class')));
@@ -252,18 +252,18 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			});
 		});
 	}
-	
+
 	/**
-	 * A widget to enter a string value for a field, using typeahead. 
+	 * A widget to enter a string value for a field, using typeahead.
 	 * If its a model, uses :name_key for that model to dispaly the value
 	 *
 	 * Options:
 	 * 	- model: string, defaults to the foreign_model of the associaton, can be comma separated
 	 * 	- source: string, the url used to retrieve the typeahead data. Defaults to the builtin typeahead action
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function typeahead($name, array $options = array(), array $attributes = array())
 	{
@@ -280,11 +280,11 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 	}
 
 	/**
-	 * A widget to enter a belnogsto / hasone like association. 
-	 * For displaying an exisiting item, you can use a template or a url. 
+	 * A widget to enter a belnogsto / hasone like association.
+	 * For displaying an exisiting item, you can use a template or a url.
 	 * If you use a template, it gets 'model', 'name', 'item' and 'id' as variables inside of it.
 	 * If you use a 'url' option - it will use its response instead of a template, passing 'model', 'id' and 'name' as query parameter fillers. E.g. /admin/images/build?model={{model}}&id={{id}}
-	 * 
+	 *
 	 * Options:
 	 *  - model: string, defaults to the foreign_model of the association, can be comma separated
 	 *  - template: string, the path for the view that is used to render an existing item
@@ -292,11 +292,11 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 	 *  - container: the html id of the container tag
 	 *  - source: string, the url used to retrieve the typeahead data. Defaults to the builtin typeahead action
 	 *  - placeholder: the placeholder for the typeahead search input
-	 *  
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 *
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function remoteselect($name, array $options = array(), array $attributes = array())
 	{
@@ -325,9 +325,12 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 			$h('input', array('name' => $attributes['name'], 'type' => 'hidden', 'value' => ''));
 
+			$label = Arr::get($options, 'label', __(Inflector::humanize($name)));
+			$default_placeholder = __('Search for :label', array(':label' => strtolower($label)));
+
 			$h('input', array(
 				'type' => 'text',
-				'placeholder' => Arr::get($options, 'placeholder', 'Search for '.Arr::get($options, 'label', strtolower(Inflector::humanize($name)))),
+				'placeholder' => Arr::get($options, 'placeholder', $default_placeholder),
 				'class' => $current ? 'fade hide' : 'fade in',
 				'data-provide' => 'remoteselect',
 				'data-source' => $options['source'],
@@ -343,7 +346,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				}
 			});
 
-		})->render();	
+		})->render();
 	}
 
 	/**
@@ -363,11 +366,11 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 	 *  - source: string, the url used to retrieve the typeahead data. Defaults to the builtin typeahead action
 	 *  - placeholder: the placeholder for the typeahead search input
 	 *  - sortable: boolean, set to TRUE to enable sortable javascript plugin
-	 * 
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 *
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function multiselect($name, array $options = array(), array $attributes = array())
 	{
@@ -397,11 +400,11 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			$h('input', array('name' => $attributes['name'].'[]', 'type' => 'hidden', 'value' => ''));
 
 			$h('p', function($h) use ($name, $options, $attributes) {
-				
+
 					$h('input', array(
 						'id' => $attributes['id'],
 						'type' => 'text',
-						'placeholder' => Arr::get($options, 'placeholder', 'Search for '.$options['label']),
+						'placeholder' => Arr::get($options, 'placeholder', __('Search for :label', array(':label' => $options['label']))),
 						'data-provide' => Arr::get($options, 'provide', 'remoteselect'),
 						'data-source' => $options['source'],
 						'data-container' => '#'.$options['container'],
@@ -409,7 +412,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 						'data-templatestring' => $options['templatestring'],
 						'style' => $options['search'] ? '' : 'display:none'
 					));
-			
+
 				if ($options['new_button'])
 				{
 					$h('button', array('type' => 'button', 'class' => 'btn', 'data-remoteselect-new' => $options['model']), $options['new_button']);
@@ -417,29 +420,29 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 				if ($options['list'])
 				{
-					$h('a', array('href' => $options['list'], 'class' => 'btn btn-link'), 'List '.$options['label']);
+					$h('a', array('href' => $options['list'], 'class' => 'btn btn-link'), __('List :item', array(':item' => $options['label'])));
 				}
 			});
 
 			$h('ul', array('class' => 'thumbnails', 'data-provide' => ($options['sortable'] ? 'sortable' : NULL), 'data-items' => ($options['sortable'] ? '> li.'.$options['sortable'] : NULL), 'data-tolerance' => 'pointer', 'data-placeholder' => 'sortable-placeholder thumbnail '.$options['sortable'], 'id' => $options['container']), function($h, $self) use ($name, $options, $attributes) {
-				
+
 				if ($self->object()->$name AND count($self->object()->$name))
 				{
-					foreach ($self->object()->$name as $index => $item) 
+					foreach ($self->object()->$name as $index => $item)
 					{
 						$h->add(View::factory($options['template'], array('name' => $attributes['name'].'[]', 'item' => $item, 'index' => $index, 'form' => $self->fields_for($name, $index))));
 					}
 				}
 			});
-		})->render();	
+		})->render();
 	}
 
 	/**
 	 * Radios select, bootstrap style
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function radios($name, array $options = array(), array $attributes = array())
 	{
@@ -452,7 +455,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 		if ($blank = Arr::get($options, 'include_blank'))
 		{
-			Arr::unshift($choices, '', ($blank === TRUE) ? " -- Select -- " : $blank);
+			Arr::unshift($choices, '', ($blank === TRUE) ? __(" -- Select -- ") : $blank);
 		}
 
 		$radios = array();
@@ -467,10 +470,10 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 	/**
 	 * An input to enter a url, when set display a link to that url alongside the input
-	 * @param  string $name       
-	 * @param  array  $options    
-	 * @param  array  $attributes 
-	 * @return string             
+	 * @param  string $name
+	 * @param  array  $options
+	 * @param  array  $attributes
+	 * @return string
 	 */
 	public function url($name, array $options = array(), array $attributes = array())
 	{
@@ -488,7 +491,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 	{
 		$options = Arr::merge(array(
 			'choices' => Jam::all('location')->where('type', '=', 'country')->order_by('name')->as_array('id', 'name'),
-			'include_blank' => 'Select Country',
+			'include_blank' => __('Select Country'),
 		), $options);
 
 		return $this->select($name, $options, $attributes, $template);
