@@ -104,16 +104,15 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 			throw new Kohana_Exception('Cannot open php://output for writing');
 
 		ob_start();
-		fputcsv($handle, array_keys($this->columns()));
+		fputcsv($handle, array_map(function($column){ return $column->label(); }, $this->columns()));
 
-		foreach ($this->collection() as $index => $item)
+		foreach ($this->collection() as $item)
 		{
 			$values = array();
-			$index = 0;
 
 			foreach ($this->columns() as $column)
 			{
-				$values[] = Text::to_plain($column->index($index++)->item($item)->render());
+				$values[] = Text::to_plain($column->item($item)->render());
 			}
 
 			fputcsv($handle, $values);
