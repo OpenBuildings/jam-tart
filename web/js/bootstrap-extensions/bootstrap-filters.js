@@ -13,6 +13,8 @@
 			.on('dragstart', function(e){
 				var current = e.target;
 
+				e.originalEvent.dataTransfer.setData('text/plain', $element.text());
+
 				$(options.dropzone)
 					.addClass('drop-target')
 					.height($(options.dropzone).closest('.row-fluid').height())

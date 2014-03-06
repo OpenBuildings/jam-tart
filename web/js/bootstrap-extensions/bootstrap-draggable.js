@@ -30,6 +30,8 @@
 
 		$element.on('dragstart', function(event){
 
+			event.originalEvent.dataTransfer.setData('text/plain', $element.text());
+
 			$(event.currentTarget)
 				.data('current', event.target)
 				.data('x', event.originalEvent.clientX)

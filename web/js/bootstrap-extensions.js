@@ -30,6 +30,8 @@
 
 		$element.on('dragstart', function(event){
 
+			event.originalEvent.dataTransfer.setData('text/plain', $element.text());
+
 			$(event.currentTarget)
 				.data('current', event.target)
 				.data('x', event.originalEvent.clientX)
@@ -290,6 +292,8 @@
 		$element
 			.on('dragstart', function(e){
 				var current = e.target;
+
+				e.originalEvent.dataTransfer.setData('text/plain', $element.text());
 
 				$(options.dropzone)
 					.addClass('drop-target')
