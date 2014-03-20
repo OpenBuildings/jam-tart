@@ -67,7 +67,7 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 					}
 					foreach ($self->columns() as $column)
 					{
-						$h('th', array('width' => $column->width()), $column->label());
+						$h('th', array('width' => $column->width(), 'nowrap'), $column->sort() ? $column->sort_anchor() : $column->label());
 					}
 				});
 
@@ -95,6 +95,7 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 				}
 			});
 		});
+
 		return $html->render();
 	}
 

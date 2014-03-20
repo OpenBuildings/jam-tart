@@ -14,13 +14,14 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 	protected $_is_link = NULL;
 	protected $_filter_name = NULL;
 	protected $_item;
-	
-	
-	function __construct($callback = NULL) 
+	protected $_sort = TRUE;
+
+
+	function __construct($callback = NULL)
 	{
 		$this->callback($callback);
 	}
-	
+
 	public function item($item = NULL)
 	{
 		if ($item !== NULL)
@@ -30,7 +31,7 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 		}
 		return $this->_item;
 	}
-	
+
 	public function width($width = NULL)
 	{
 		if ($width !== NULL)
@@ -39,6 +40,17 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 			return $this;
 		}
 		return $this->_width;
+	}
+
+	public function sort($sort = NULL)
+	{
+		if ($sort !== NULL)
+		{
+			$this->_sort = $sort;
+			return $this;
+		}
+
+		return $this->_sort;
 	}
 
 	public function set_link($link)
@@ -59,17 +71,17 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 	{
 		return $this->_filter;
 	}
-	
+
 	public function filter_name()
 	{
 		return $this->_filter_name;
 	}
-	
+
 	public function render()
 	{
 		if ( ! $this->item())
 			throw new Kohana_Exception('You must assign an item before you render');
-		
+
 		if ($callback = $this->callback())
 		{
 			$content = call_user_func($callback, $this->item(), $this->name(), $this);
@@ -107,6 +119,31 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 		return $content;
 	}
 
+	public function sort_anchor()
+	{
+		$direction = 'asc';
+
+		if ($sort = Arr::get(Request::initial()->query(), 'sort'))
+		{
+			list($column, $current_direction) = explode(':', $sort);
+		}
+
+		if (isset($column) AND $column == $this->name())
+		{
+			$direction = ($current_direction == 'asc') ? 'desc' : 'asc';
+		}
+		else
+		{
+			$current_direction = NULL;
+		}
+
+		$class = ($current_direction) ? 'icon icon-chevron-'.(($current_direction == 'asc') ? 'up' : 'down') : '';
+
+		return
+			HTML::anchor(Tart::uri($this->controller()).URL::query(array('sort' => $this->name().':'.$direction)),
+			$this->label().' '.HTML::tag('i', array('class' => $class)));
+	}
+
 	protected static function render_association(Jam_Model $item, Jam_Association $association)
 	{
 		$value = $item->{$association->name};
@@ -114,8 +151,8 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 		if ($association instanceof Jam_Association_Collection)
 		{
 			return count($value);
-		}	
-		elseif ($value instanceof Jam_Model) 
+		}
+		elseif ($value instanceof Jam_Model)
 		{
 			$model = $value->meta()->model();
 			return $value->name();
@@ -125,7 +162,7 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 	protected static function render_field(Jam_Model $item, Jam_Field $field)
 	{
 		$value = $item->{$field->name};
-		
+
 		if ($field instanceof Jam_Field_Integer)
 		{
 			return HTML::chars(number_format($value));
@@ -144,9 +181,9 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 		}
 		elseif ($field instanceof Jam_Field_Timestamp)
 		{
-			if ( ! $value) 
+			if ( ! $value)
 				return '-';
-			
+
 			$time = is_numeric($value) ? $value : strtotime($value);
 			return '<span title="'.date('j M Y', $time).'">'.Tart_Html::date_span($time).'</span>';
 		}
