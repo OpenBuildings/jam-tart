@@ -141,7 +141,7 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 
 		return
 			HTML::anchor(Tart::uri($this->controller()).URL::query(array('sort' => $this->name().':'.$direction)),
-			$this->label().' '.'<i class="'.$class.'"><i>');
+			$this->label().' '.'<i class="'.$class.'"></i>');
 	}
 
 	protected static function render_association(Jam_Model $item, Jam_Association $association)
