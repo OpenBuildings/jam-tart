@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -58,3 +58,5 @@ Kohana::$index_file = FALSE;
 HTML::$windowed_urls = TRUE;
 
 Kohana::$environment = Kohana::TESTING;
+
+Request::factory();

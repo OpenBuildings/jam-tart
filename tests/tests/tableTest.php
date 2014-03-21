@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Jamtart_TableTest 
+ * Jamtart_TableTest
  *
  * @group jam-tart
  * @group jam-tart.table
- * 
+ *
  * @package Jam tart
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
@@ -55,7 +55,11 @@ class Jamtart_TableTest extends PHPUnit_Framework_TestCase {
 			array('id' => 1, 'name' => 'London', 'population' => 10),
 			array('id' => 2, 'name' => 'New York', 'population' => 15),
 		));
-		$columns = array('name' => new Tart_Column(), 'population' => new Tart_Column());
+		$name = new Tart_Column();
+		$name->sort(FALSE);
+		$population = new Tart_Column();
+		$population->sort(FALSE);
+		$columns = array('name' => $name, 'population' => $population);
 		$table = new Tart_Table($collection, $columns);
 		$table->selected(FALSE);
 

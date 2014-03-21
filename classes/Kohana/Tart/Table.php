@@ -67,7 +67,14 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 					}
 					foreach ($self->columns() as $column)
 					{
-						$h('th', array('width' => $column->width(), 'nowrap'), $column->sort() ? $column->sort_anchor() : $column->label());
+						$attributes = array('width' => $column->width());
+
+						if ($column->sort())
+						{
+							$attributes['nowrap'] = 'nowrap';
+						}
+
+						$h('th', $attributes, $column->sort() ? $column->sort_anchor() : $column->label());
 					}
 				});
 
