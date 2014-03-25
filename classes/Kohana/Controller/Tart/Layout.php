@@ -9,72 +9,78 @@
  */
 abstract class Kohana_Controller_Tart_Layout extends Controller_Template {
 
-	public $template = 'tart/layout/template';
-	public $access = 'private';
+    const ACCESS_METHOD_PERMISSION = 'permission';
+    const ACCESS_METHOD_URL = 'url';
 
-	public function before()
-	{
-		parent::before();
+    public $template = 'tart/layout/template';
+    public $access = 'private';
+    public $access_method = self::AUTH_METHOD_URL;
+    public $access_permission;
 
-		$access = Auth_Jam::access($this->request->action(), $this->access);
+    public function before()
+    {
+        parent::before();
 
-		if ($access === 'private' AND ( ! Auth::instance()->logged_in() OR ! Tart::user_allowed($this->request->uri(), Auth::instance()->get_user())))
-		{
-			if ( ! Auth::instance()->logged_in())
-			{
-				$this->notify('warning', 'You must be logged in to access this page');
-			}
-			else
-			{
-				$this->notify('warning', 'Your user does not have access to "'.$this->request->uri().'" page');
-			}
+        $access = Auth_Jam::access($this->request->action(), $this->access);
+        $access_method = 'user_access_by_'.$this->access_method;
 
-			Session::instance()->set('requested_url', $this->request->uri());
-			$this->redirect(Tart::uri('session', 'new'));
-		}
+        if ($access === 'private' AND ( ! Auth::instance()->logged_in() OR ! Tart::$access_method(Auth::instance()->get_user(), $this->access_permission, $this->request->uri())))
+        {
+            if ( ! Auth::instance()->logged_in())
+            {
+                $this->notify('warning', 'You must be logged in to access this page');
+            }
+            else
+            {
+                $this->notify('warning', 'Your user does not have access to "'.$this->request->uri().'" page');
+            }
 
-		$this->template->title = $this->title();
-		$this->template->sidebar = FALSE;
-	}
+            Session::instance()->set('requested_url', $this->request->uri());
+            $this->redirect(Tart::uri('session', 'new'));
+        }
 
-	public function title()
-	{
-		$name = str_replace('Controller_Tart_', '', get_class($this));
-		$name = ucwords(Inflector::humanize($name));
+        $this->template->title = $this->title();
+        $this->template->sidebar = FALSE;
+    }
 
-		if ($this->request->param('id'))
-		{
-			return ucwords(Inflector::singular($name)).' - '.Inflector::humanize($this->request->action());
-		}
-		else
-		{
-			return $name.' - '.Inflector::humanize($this->request->action());
-		}
-	}
+    public function title()
+    {
+        $name = str_replace('Controller_Tart_', '', get_class($this));
+        $name = ucwords(Inflector::humanize($name));
 
-	public function action_batch()
-	{
-		$ids = $this->request->post('id') ?: $this->request->query('id');
-		$action = $this->request->post('action') ?: $this->request->query('action');
+        if ($this->request->param('id'))
+        {
+            return ucwords(Inflector::singular($name)).' - '.Inflector::humanize($this->request->action());
+        }
+        else
+        {
+            return $name.' - '.Inflector::humanize($this->request->action());
+        }
+    }
 
-		$this->{'batch_'.$action}($ids);
-	}
+    public function action_batch()
+    {
+        $ids = $this->request->post('id') ?: $this->request->query('id');
+        $action = $this->request->post('action') ?: $this->request->query('action');
 
-	public function notify($label, $message)
-	{
-		$notifications = Session::instance()->get('tart.notifications', array());
+        $this->{'batch_'.$action}($ids);
+    }
 
-		$notifications[] = array('label' => $label, 'message' => $message);
-		Session::instance()->set('tart.notifications', $notifications);
-	}
+    public function notify($label, $message)
+    {
+        $notifications = Session::instance()->get('tart.notifications', array());
 
-	public function post($name = NULL)
-	{
-		$post = Tart_Request::post($this->request->post(), $_FILES);
-		
-		if ($name !== NULL)
-			return Arr::get($post, $name);
+        $notifications[] = array('label' => $label, 'message' => $message);
+        Session::instance()->set('tart.notifications', $notifications);
+    }
 
-		return $post;
-	}
+    public function post($name = NULL)
+    {
+        $post = Tart_Request::post($this->request->post(), $_FILES);
+
+        if ($name !== NULL)
+            return Arr::get($post, $name);
+
+        return $post;
+    }
 }
