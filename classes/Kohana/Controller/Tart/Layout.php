@@ -14,7 +14,7 @@ abstract class Kohana_Controller_Tart_Layout extends Controller_Template {
 
     public $template = 'tart/layout/template';
     public $access = 'private';
-    public $access_method = self::AUTH_METHOD_URL;
+    public $access_method = self::ACCESS_METHOD_URL;
     public $access_permission;
 
     public function before()
