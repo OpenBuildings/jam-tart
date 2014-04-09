@@ -1,17 +1,26 @@
---- 
+---
 language: php
 
 php:
   - 5.3
+  - 5.4
+
+notifications:
+  email: false
+  slack:
+    secure: dUHUpv7ct2DoeMREPz+FV3S2a4H78Dre59C7G3/N7AhSJeRcpoEuf0OSfDUvda+2+uXZK1jbD3isuYYda0JtQkEA0i90YCjiX5LqgDZ4axwxR7WqD9CBTaDs9CaQhia477MseZ7am0eBdaa9TTfcbNSU+9cD8Zd8U1R/876brWM=
+
+install:
+  - composer selfupdate
+  - composer install --no-interaction
+
+before_script:
+  - mkdir -p build/logs
+  - mysql -e 'create database `test-jam-tart`;'
 
 script:
   - phpunit --coverage-clover build/logs/clover.xml
 
-before_script:
-  - mkdir -p build/logs
-  - composer require --dev satooshi/php-coveralls:dev-master
-  - composer install
-  - mysql -e 'create database `test-jam-tart`;'
-
 after_script:
-  - php vendor/bin/coveralls -v
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
