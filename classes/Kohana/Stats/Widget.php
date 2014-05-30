@@ -13,6 +13,7 @@ abstract class Kohana_Stats_Widget {
 	protected $_id;
 	protected $_range;
 	protected $_options = array();
+	protected $_query = array();
 
 	public function __construct($id, Tart_Date_Range $range = NULL)
 	{
@@ -32,12 +33,12 @@ abstract class Kohana_Stats_Widget {
 		return $this->_title;
 	}
 
-	
+
 	public function options($key = NULL, $value = NULL)
 	{
 		if ($key === NULL)
 			return $this->_options;
-	
+
 		if (is_array($key))
 		{
 			$this->_options = $key;
@@ -46,10 +47,10 @@ abstract class Kohana_Stats_Widget {
 		{
 			if ($value === NULL)
 				return Arr::get($this->_options, $key);
-	
+
 			$this->_options[$key] = $value;
 		}
-	
+
 		return $this;
 	}
 
@@ -81,7 +82,7 @@ abstract class Kohana_Stats_Widget {
 		$b = $b instanceof Jam_Price ? $b->amount() : $b;
 
 		return ($b > 0) ? (($a - $b) / $b) * 100 : 0;
-	}	
+	}
 
 	public static function to_percent($a, $b)
 	{
@@ -111,6 +112,16 @@ abstract class Kohana_Stats_Widget {
 		}
 
 		return $this->_cache;
+	}
+
+	public function query($query = NULL)
+	{
+		if ($query !== NULL)
+		{
+			$this->_query = $query;
+			return $this;
+		}
+		return $this->_query;
 	}
 
 	public function cache_key()
