@@ -33,4 +33,19 @@ abstract class Kohana_Controller_Tart_Modify extends Controller{
 
 		$this->response->body('OK');
 	}
+
+	public function action_reorder()
+	{
+		if ($this->request->method() === Request::POST)
+		{
+			Jam::all($this->request->query('model'))
+				->sort_ids(Arr::get($this->request->post(), 'item', array()));
+
+			$this->response->body('OK');
+		}
+		else
+		{
+			$this->response->body('Empty post');
+		}
+	}
 }

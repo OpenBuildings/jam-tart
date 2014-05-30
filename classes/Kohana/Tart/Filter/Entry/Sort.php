@@ -28,7 +28,7 @@ abstract class Kohana_Tart_Filter_Entry_Sort extends Tart_Filter_Entry {
 
 	public function render()
 	{
-		return $this->parent()->form()->row('hidden', $this->name());
+		return $this->parent()->form()->hidden($this->name());
 	}
 
 }
