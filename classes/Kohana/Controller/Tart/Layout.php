@@ -24,6 +24,11 @@ abstract class Kohana_Controller_Tart_Layout extends Controller_Template {
         $access = Auth_Jam::access($this->request->action(), $this->access);
         $access_method = 'user_access_by_'.$this->access_method;
 
+        if ($this->access_method !== self::ACCESS_METHOD_PERMISSION)
+        {
+            $this->access_permission = TRUE;
+        }
+
         if ($access === 'private' AND $this->access_permission AND ( ! Auth::instance()->logged_in() OR ! Tart::$access_method(Auth::instance()->get_user(), $this->access_permission, $this->request->uri())))
         {
             if ( ! Auth::instance()->logged_in())
