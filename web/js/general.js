@@ -14,6 +14,19 @@ $(function(){
 		$('#confirm').modal('show');
 	});
 
+	$('body').on('change', 'select[data-confirm]', function(e) {
+		var $this = $(this);
+		var initial = $this.data('initial');
+		var confirm = $this.closest('form').find($this.data('confirm'));
+
+		if ($this.val() === initial) {
+			confirm.prop('disabled', true);
+		} else {
+			confirm.prop('disabled', false);
+			confirm.show();
+		}
+	});
+
 	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
 
@@ -98,7 +111,7 @@ $(function(){
 		{
 			$($(this).data('select-custom')).removeClass('in').attr('disabled', 'disabled');
 		}
-	})
+	});
 
 	$('body').on('submit', 'form[data-provide="async"]', function(e){
 		var $form = $(this);
