@@ -19,6 +19,28 @@ textarea.hide {
   display: none;
 }
 
+.purchase-number-group .purchase-number {
+  background-color: #b3ddf5;
+  border-radius: 27px 0 0 27px;
+  padding: 3px 3px 3px 7px;
+  border-right: 1px solid;
+  font-size: 12px;
+  color: #444;
+}
+
+.purchase-number-group .store-purchase-number {
+  background-color: rgba(135, 197, 63, 0.65);
+  border-radius: 0 27px 27px 0;
+  padding: 3px 7px 3px 3px;
+  font-size: 12px;
+  color: #444;
+}
+
+.purchase-number-group .icon-th-large, .purchase-number-group .icon-user {
+  opacity: 0.9;
+  margin-top: 0;
+}
+
 /* Fix first item in thumbnails row for row-fluid */
 
 .row-fluid ul.thumbnails li.span12 + li {
