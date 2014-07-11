@@ -151,19 +151,23 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 		$content = $content->render();
 
 		$html = Tart::html($this, function($h, $self) use ($content) {
-			$h->form(Tart::uri($self->controller(), 'batch'), array('method' => 'get'), function($h, $self) use ($content) {
-				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_TOP)
-				{
-					$h->add($self->render_batch_actions());
-				}
-
+			if ( ! $this->batch_actions()) {
 				$h->add($content);
+			} else {
+				$h->form(Tart::uri($self->controller(), 'batch'), array('method' => 'get'), function($h, $self) use ($content) {
+					if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_TOP)
+					{
+						$h->add($self->render_batch_actions());
+					}
 
-				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTTOM)
-				{
-					$h->add($self->render_batch_actions());
-				}
-			});
+					$h->add($content);
+
+					if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTTOM)
+					{
+						$h->add($self->render_batch_actions());
+					}
+				});
+			}
 
 			$h->add($self->pagination()->render());
 		});
