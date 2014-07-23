@@ -28,7 +28,7 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 
 		return $this;
 	}
-	
+
 	public function per_page($per_page = NULL)
 	{
 		if ($per_page !== NULL)
@@ -38,7 +38,7 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 		}
 		return $this->_per_page;
 	}
-	
+
 	public function previous()
 	{
 		return Tart::html($this, function($h, $self) {
@@ -97,6 +97,10 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 							$h->add("Showing: ".$self->offset().' - '.min($self->offset() + $self->per_page(), $self->total()).' of '.$self->total());
 						});
 						$h('span', array('style' => 'display:none'), function($h, $self){
+							foreach (Request::initial()->query() as $key => $value)
+							{
+								$h('input', array('type' => 'hidden', 'name' => $key, 'value' => $value));
+							}
 							$h('input', array('id' => 'pagination-slider', 'type' => 'range', 'class' => 'input-large', 'min' => 0, 'step' => $self->per_page(), 'value' => $self->offset(), 'max' => $self->total()));
 							$h('input', array('id' => 'pagination-input', 'type' => 'number', 'name' => 'offset', 'class' => 'input-mini', 'min' => 0, 'step' => $self->per_page(), 'value' => $self->offset(), 'max' => $self->total()));
 							$h('button', array('type' => 'submit', 'class' => 'btn'), __('Go'));
@@ -106,7 +110,7 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 				});
 			});
 	}
-	
+
 	public function offset($offset = NULL)
 	{
 		if ($offset !== NULL)
@@ -116,7 +120,7 @@ abstract class Kohana_Tart_Pagination extends Tart_Interface {
 		}
 		return $this->_offset;
 	}
-	
+
 	public function total($total = NULL)
 	{
 		if ($total !== NULL)
