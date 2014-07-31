@@ -202,7 +202,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 					{
 						$thumbnail = Arr::get($options, 'thumbnail');
 
-						$h('img', array('src' => $self->object()->$name->url($thumbnail, TRUE)));
+						$h('img', array('src' => URL::site($self->object()->$name->url($thumbnail, TRUE))));
 					}
 				});
 
