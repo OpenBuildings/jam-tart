@@ -136,114 +136,114 @@
   * ================================= */
 
   var Fileupload = function (element, options) {
-    this.$element = $(element)
-    this.type = this.$element.data('uploadtype') || (this.$element.find('.thumbnail').length > 0 ? "image" : "file")
-      
-    this.$input = this.$element.find(':file')
-    if (this.$input.length === 0) return
+	this.$element = $(element)
+	this.type = this.$element.data('uploadtype') || (this.$element.find('.thumbnail').length > 0 ? "image" : "file")
+	  
+	this.$input = this.$element.find(':file')
+	if (this.$input.length === 0) return
 
-    this.name = this.$input.attr('name') || options.name
+	this.name = this.$input.attr('name') || options.name
 
-    this.$hidden = this.$element.find('input[type=hidden][name="'+this.name+'"]')
-    if (this.$hidden.length === 0) {
-      this.$hidden = $('<input type="hidden" />')
-      this.$element.prepend(this.$hidden)
-    }
+	this.$hidden = this.$element.find('input[type=hidden][name="'+this.name+'"]')
+	if (this.$hidden.length === 0) {
+	  this.$hidden = $('<input type="hidden" />')
+	  this.$element.prepend(this.$hidden)
+	}
 
-    this.$preview = this.$element.find('.fileupload-preview')
-    var height = this.$preview.css('height')
-    if (this.$preview.css('display') != 'inline' && height != '0px' && height != 'none') this.$preview.css('line-height', height)
+	this.$preview = this.$element.find('.fileupload-preview')
+	var height = this.$preview.css('height')
+	if (this.$preview.css('display') != 'inline' && height != '0px' && height != 'none') this.$preview.css('line-height', height)
 
-    this.original = {
-      'exists': this.$element.hasClass('fileupload-exists'),
-      'preview': this.$preview.html(),
-      'hiddenVal': this.$hidden.val()
-    }
-    
-    this.$remove = this.$element.find('[data-dismiss="fileupload"]')
+	this.original = {
+	  'exists': this.$element.hasClass('fileupload-exists'),
+	  'preview': this.$preview.html(),
+	  'hiddenVal': this.$hidden.val()
+	}
+	
+	this.$remove = this.$element.find('[data-dismiss="fileupload"]')
 
-    this.$element.find('[data-trigger="fileupload"]').on('click.fileupload', $.proxy(this.trigger, this))
+	this.$element.find('[data-trigger="fileupload"]').on('click.fileupload', $.proxy(this.trigger, this))
 
-    this.listen()
+	this.listen()
   }
   
   Fileupload.prototype = {
-    
-    listen: function() {
-      this.$input.on('change.fileupload', $.proxy(this.change, this))
-      $(this.$input[0].form).on('reset.fileupload', $.proxy(this.reset, this))
-      if (this.$remove) this.$remove.on('click.fileupload', $.proxy(this.clear, this))
-    },
-    
-    change: function(e, invoked) {
-      if (invoked === 'clear') return
-      
-      var file = e.target.files !== undefined ? e.target.files[0] : (e.target.value ? { name: e.target.value.replace(/^.+\\/, '') } : null)
-      
-      if (!file) {
-        this.clear()
-        return
-      }
-      
-      this.$hidden.val('')
-      this.$hidden.attr('name', '')
-      this.$input.attr('name', this.name)
+	
+	listen: function() {
+	  this.$input.on('change.fileupload', $.proxy(this.change, this))
+	  $(this.$input[0].form).on('reset.fileupload', $.proxy(this.reset, this))
+	  if (this.$remove) this.$remove.on('click.fileupload', $.proxy(this.clear, this))
+	},
+	
+	change: function(e, invoked) {
+	  if (invoked === 'clear') return
+	  
+	  var file = e.target.files !== undefined ? e.target.files[0] : (e.target.value ? { name: e.target.value.replace(/^.+\\/, '') } : null)
+	  
+	  if (!file) {
+		this.clear()
+		return
+	  }
+	  
+	  this.$hidden.val('')
+	  this.$hidden.attr('name', '')
+	  this.$input.attr('name', this.name)
 
-      if (this.type === "image" && this.$preview.length > 0 && (typeof file.type !== "undefined" ? file.type.match('image.*') : file.name.match(/\.(gif|png|jpe?g)$/i)) && typeof FileReader !== "undefined") {
-        var reader = new FileReader()
-        var preview = this.$preview
-        var element = this.$element
+	  if (this.type === "image" && this.$preview.length > 0 && (typeof file.type !== "undefined" ? file.type.match('image.*') : file.name.match(/\.(gif|png|jpe?g)$/i)) && typeof FileReader !== "undefined") {
+		var reader = new FileReader()
+		var preview = this.$preview
+		var element = this.$element
 
-        reader.onload = function(e) {
-          preview.html('<img src="' + e.target.result + '" ' + (preview.css('max-height') != 'none' ? 'style="max-height: ' + preview.css('max-height') + ';"' : '') + ' />')
-          element.addClass('fileupload-exists').removeClass('fileupload-new')
-        }
+		reader.onload = function(e) {
+		  preview.html('<img src="' + e.target.result + '" ' + (preview.css('max-height') != 'none' ? 'style="max-height: ' + preview.css('max-height') + ';"' : '') + ' />')
+		  element.addClass('fileupload-exists').removeClass('fileupload-new')
+		}
 
-        reader.readAsDataURL(file)
-      } else {
-        this.$preview.text(file.name)
-        this.$element.addClass('fileupload-exists').removeClass('fileupload-new')
-      }
-    },
+		reader.readAsDataURL(file)
+	  } else {
+		this.$preview.text(file.name)
+		this.$element.addClass('fileupload-exists').removeClass('fileupload-new')
+	  }
+	},
 
-    clear: function(e) {
-      this.$hidden.val('')
-      this.$hidden.attr('name', this.name)
-      this.$input.attr('name', '')
+	clear: function(e) {
+	  this.$hidden.val('')
+	  this.$hidden.attr('name', this.name)
+	  this.$input.attr('name', '')
 
-      //ie8+ doesn't support changing the value of input with type=file so clone instead
-      if (navigator.userAgent.match(/msie/i)){ 
-          var inputClone = this.$input.clone(true);
-          this.$input.after(inputClone);
-          this.$input.remove();
-          this.$input = inputClone;
-      }else{
-          this.$input.val('')
-      }
+	  //ie8+ doesn't support changing the value of input with type=file so clone instead
+	  if (navigator.userAgent.match(/msie/i)){ 
+		  var inputClone = this.$input.clone(true);
+		  this.$input.after(inputClone);
+		  this.$input.remove();
+		  this.$input = inputClone;
+	  }else{
+		  this.$input.val('')
+	  }
 
-      this.$preview.html('')
-      this.$element.addClass('fileupload-new').removeClass('fileupload-exists')
+	  this.$preview.html('')
+	  this.$element.addClass('fileupload-new').removeClass('fileupload-exists')
 
-      if (e) {
-        this.$input.trigger('change', [ 'clear' ])
-        e.preventDefault()
-      }
-    },
-    
-    reset: function(e) {
-      this.clear()
-      
-      this.$hidden.val(this.original.hiddenVal)
-      this.$preview.html(this.original.preview)
-      
-      if (this.original.exists) this.$element.addClass('fileupload-exists').removeClass('fileupload-new')
-       else this.$element.addClass('fileupload-new').removeClass('fileupload-exists')
-    },
-    
-    trigger: function(e) {
-      this.$input.trigger('click')
-      e.preventDefault()
-    }
+	  if (e) {
+		this.$input.trigger('change', [ 'clear' ])
+		e.preventDefault()
+	  }
+	},
+	
+	reset: function(e) {
+	  this.clear()
+	  
+	  this.$hidden.val(this.original.hiddenVal)
+	  this.$preview.html(this.original.preview)
+	  
+	  if (this.original.exists) this.$element.addClass('fileupload-exists').removeClass('fileupload-new')
+	   else this.$element.addClass('fileupload-new').removeClass('fileupload-exists')
+	},
+	
+	trigger: function(e) {
+	  this.$input.trigger('click')
+	  e.preventDefault()
+	}
   }
 
   
@@ -251,12 +251,12 @@
   * =========================== */
 
   $.fn.fileupload = function (options) {
-    return this.each(function () {
-      var $this = $(this)
-      , data = $this.data('fileupload')
-      if (!data) $this.data('fileupload', (data = new Fileupload(this, options)))
-      if (typeof options == 'string') data[options]()
-    })
+	return this.each(function () {
+	  var $this = $(this)
+	  , data = $this.data('fileupload')
+	  if (!data) $this.data('fileupload', (data = new Fileupload(this, options)))
+	  if (typeof options == 'string') data[options]()
+	})
   }
 
   $.fn.fileupload.Constructor = Fileupload
@@ -266,15 +266,15 @@
   * ================== */
 
   $(document).on('click.fileupload.data-api', '[data-provides="fileupload"]', function (e) {
-    var $this = $(this)
-    if ($this.data('fileupload')) return
-    $this.fileupload($this.data())
-      
-    var $target = $(e.target).closest('[data-dismiss="fileupload"],[data-trigger="fileupload"]');
-    if ($target.length > 0) {
-      $target.trigger('click.fileupload')
-      e.preventDefault()
-    }
+	var $this = $(this)
+	if ($this.data('fileupload')) return
+	$this.fileupload($this.data())
+	  
+	var $target = $(e.target).closest('[data-dismiss="fileupload"],[data-trigger="fileupload"]');
+	if ($target.length > 0) {
+	  $target.trigger('click.fileupload')
+	  e.preventDefault()
+	}
   })
 
 }(window.jQuery);
@@ -386,6 +386,17 @@
 		return ($(el).data('sortableId')) || $(el).find(handle).data('sortableId');
 	}
 
+	function buildFormData(items, itemName) {
+		var tagNameArr = [];
+
+		itemName = itemName || "item";
+		$.each(items, function() {
+			tagNameArr.push(itemName + "[]=" + $(this).data("sortableId"));
+		});
+
+		return tagNameArr.join("&");
+	}
+
  /* sortable DATA-API
 	* ============ */
 
@@ -403,17 +414,23 @@ $(function () {
 					tolerance: $this.data('tolerance'),
 					stop: function(event, ui) {
 						if ($(this).data('sortUrl')) {
-							// determine whether we move the element up or down
-							$.ajax([
-								$(this).data('sortUrl'), 
-								'&from=',
-								getElementSortableId(ui.item, $(this).data('handle')),
-								'&to=',
-								getElementSortableId(ui.item.next(), $(this).data('handle'))
-							].join(''));
-						}
-						else
-						{
+							if ($(this).data('postAll')) {
+								$.ajax({
+									url: $(this).data("sortUrl"),
+									data: buildFormData($(this).find("[data-sortable-id]")),
+									type:"post",
+									dataType:"json"
+								});
+							} else {
+								$.ajax([
+									$(this).data('sortUrl'), 
+									'&from=',
+									getElementSortableId(ui.item, $(this).data('handle')),
+									'&to=',
+									getElementSortableId(ui.item.next(), $(this).data('handle'))
+								].join(''));
+							}
+						} else {
 							$(this).children().each(function(i){
 								$(this).find('[data-sortable="position"]').val(i);
 							});
@@ -674,65 +691,65 @@ $(function () {
   * ==================== */
 
   var SelectTab = function (element) {
-    this.element = $(element);
+	this.element = $(element);
   };
 
   SelectTab.prototype = {
 
-    constructor: SelectTab,
+	constructor: SelectTab,
 
-    show: function () {
+	show: function () {
 
-      var $this = this.element,
-        $previous = $($this.data('previous')),
-        $target = $('#' + ($this.data('tabPrefix') || '') + $this.val()),
-        e,
-        transition = $.support.transition && $target.hasClass('fade');
-       
-      if ( $target.hasClass('active') ) return;
+	  var $this = this.element,
+		$previous = $($this.data('previous')),
+		$target = $('#' + ($this.data('tabPrefix') || '') + $this.val()),
+		e,
+		transition = $.support.transition && $target.hasClass('fade');
+	   
+	  if ( $target.hasClass('active') ) return;
 
-      e = $.Event('show', {
-        target: $target,
-        relatedTarget: $previous
-      });
+	  e = $.Event('show', {
+		target: $target,
+		relatedTarget: $previous
+	  });
 
-      $this.trigger(e);
+	  $this.trigger(e);
 
-      if (e.isDefaultPrevented()) return;
+	  if (e.isDefaultPrevented()) return;
 
-      function next() {
-        $previous.removeClass('active');
+	  function next() {
+		$previous.removeClass('active');
 
-        $target.addClass('active');
+		$target.addClass('active');
 
-        if (transition) {
-          $target.addClass('in');
-        } else {
-          $target.removeClass('fade');
-        }
+		if (transition) {
+		  $target.addClass('in');
+		} else {
+		  $target.removeClass('fade');
+		}
 
-        if ($this.data('disable')) {
-          $target.removeAttr('disabled');
-          $previous.attr('disabled', 'disabled');
-        }
+		if ($this.data('disable')) {
+		  $target.removeAttr('disabled');
+		  $previous.attr('disabled', 'disabled');
+		}
 
-        $this.trigger({
-          type: 'shown',
-          target: $target,
-          relatedTarget: $previous
-        });
+		$this.trigger({
+		  type: 'shown',
+		  target: $target,
+		  relatedTarget: $previous
+		});
 
-      }
+	  }
 
-      if (transition) {
-        $previous.one($.support.transition.end, next);
-      } else {
-        next();
-      }
+	  if (transition) {
+		$previous.one($.support.transition.end, next);
+	  } else {
+		next();
+	  }
 
-      $previous.removeClass('in');
-      $this.data('previous', '#' + ($this.data('tabPrefix') || '') + $this.val());
-    }
+	  $previous.removeClass('in');
+	  $this.data('previous', '#' + ($this.data('tabPrefix') || '') + $this.val());
+	}
   };
 
 
@@ -742,12 +759,12 @@ $(function () {
   var old = $.fn.selecttab;
 
   $.fn.selecttab = function ( option ) {
-    return this.each(function () {
-      var $this = $(this),
-        data = $this.data('selecttab');
-      if (!data) $this.data('selecttab', (data = new SelectTab(this)));
-      if (typeof option == 'string') data[option]();
-    });
+	return this.each(function () {
+	  var $this = $(this),
+		data = $this.data('selecttab');
+	  if (!data) $this.data('selecttab', (data = new SelectTab(this)));
+	  if (typeof option == 'string') data[option]();
+	});
   };
 
   $.fn.selecttab.Constructor = SelectTab;
@@ -757,8 +774,8 @@ $(function () {
   * =============== */
 
   $.fn.selecttab.noConflict = function () {
-    $.fn.selecttab = old;
-    return this;
+	$.fn.selecttab = old;
+	return this;
   };
 
 
@@ -766,8 +783,8 @@ $(function () {
   * ============ */
 
   $(document).on('change.selecttab.data-api', '[data-provide="selecttab"]', function (e) {
-    e.preventDefault();
-    $(this).selecttab('show');
+	e.preventDefault();
+	$(this).selecttab('show');
   });
 
 }(window.jQuery);﻿//
@@ -786,342 +803,342 @@ function ($) {
   'use strict';
 
   var _defaults = {
-      source: [],
-      maxResults: 8,
-      minLength: 1,
-      menu: '<ul class="typeahead dropdown-menu"></ul>',
-      item: '<li><a href="#"></a></li>',
-      display: 'name',
-      val: 'id',
-      itemSelected: function () { }
-    },
+	  source: [],
+	  maxResults: 8,
+	  minLength: 1,
+	  menu: '<ul class="typeahead dropdown-menu"></ul>',
+	  item: '<li><a href="#"></a></li>',
+	  display: 'name',
+	  val: 'id',
+	  itemSelected: function () { }
+	},
 
-    _keyCodes = {
-      DOWN: 40,
-      ENTER: 13 || 108,
-      ESCAPE: 27,
-      TAB: 9,
-      UP: 38
-    },
+	_keyCodes = {
+	  DOWN: 40,
+	  ENTER: 13 || 108,
+	  ESCAPE: 27,
+	  TAB: 9,
+	  UP: 38
+	},
 
-    Typeahead = function (element, options) {
-      this.$element = $(element);
-      this.options = $.extend(true, {}, $.fn.typeahead.defaults, options);
-      this.$menu = $(this.options.menu).appendTo('body');
-      this.sorter = this.options.sorter || this.sorter;
-      this.highlighter = this.options.highlighter || this.highlighter;
-      this.shown = false;
-      this.initSource();
-      this.listen();
-    }
+	Typeahead = function (element, options) {
+	  this.$element = $(element);
+	  this.options = $.extend(true, {}, $.fn.typeahead.defaults, options);
+	  this.$menu = $(this.options.menu).appendTo('body');
+	  this.sorter = this.options.sorter || this.sorter;
+	  this.highlighter = this.options.highlighter || this.highlighter;
+	  this.shown = false;
+	  this.initSource();
+	  this.listen();
+	}
 
   Typeahead.prototype = {
 
-      constructor: Typeahead,
+	  constructor: Typeahead,
 
-      initSource: function() {
+	  initSource: function() {
 
-        if (this.options.source) {
-          if (typeof this.options.source === 'string') {
-           this.source = $.extend({}, $.ajaxSettings, { url: this.options.source })
-          } else if (typeof this.options.source === 'object') {
-            if (this.options.source instanceof Array) {
-              this.source = this.options.source;
-            } else {
-              this.source = $.extend(true, {}, $.ajaxSettings, this.options.source);
-            }
-          }
-        }
-      },
+		if (this.options.source) {
+		  if (typeof this.options.source === 'string') {
+		   this.source = $.extend({}, $.ajaxSettings, { url: this.options.source })
+		  } else if (typeof this.options.source === 'object') {
+			if (this.options.source instanceof Array) {
+			  this.source = this.options.source;
+			} else {
+			  this.source = $.extend(true, {}, $.ajaxSettings, this.options.source);
+			}
+		  }
+		}
+	  },
 
-      eventSupported: function(eventName) {
-        var isSupported = (eventName in this.$element);
+	  eventSupported: function(eventName) {
+		var isSupported = (eventName in this.$element);
 
-        if (!isSupported) {
-          this.$element.setAttribute(eventName, 'return;');
-          isSupported = typeof this.$element[eventName] === 'function';
-        }
+		if (!isSupported) {
+		  this.$element.setAttribute(eventName, 'return;');
+		  isSupported = typeof this.$element[eventName] === 'function';
+		}
 
-        return isSupported;
-      },
+		return isSupported;
+	  },
 
-      lookup: function (event) {
-        var that = this,
-            items;
+	  lookup: function (event) {
+		var that = this,
+			items;
 
-        this.query = this.$element.val();
-        if (!this.query || this.query.length < this.options.minLength) {
-          return this.shown ? this.hide() : this;
-        }
+		this.query = this.$element.val();
+		if (!this.query || this.query.length < this.options.minLength) {
+		  return this.shown ? this.hide() : this;
+		}
 
-        if (this.source.url) {
-          if (this.xhr) this.xhr.abort();
+		if (this.source.url) {
+		  if (this.xhr) this.xhr.abort();
 
-          this.xhr = $.ajax(
-            $.extend({}, this.source, {
-              data: { query: that.query },
-              success: $.proxy(that.filter, that)
-            })
-          );
-        } else {
-          items = $.proxy(that.filter(that.source), that);
-        }
-      },
+		  this.xhr = $.ajax(
+			$.extend({}, this.source, {
+			  data: { query: that.query },
+			  success: $.proxy(that.filter, that)
+			})
+		  );
+		} else {
+		  items = $.proxy(that.filter(that.source), that);
+		}
+	  },
 
-      filter: function(data) {
-        var that = this,
+	  filter: function(data) {
+		var that = this,
 	  items;
 
-        items = $.grep(data, function (item) {
+		items = $.grep(data, function (item) {
 	  var query_items = that.query.toLowerCase().split(' '),
-	    data = item[that.options.display].toLowerCase();
+		data = item[that.options.display].toLowerCase();
 
 	  for (var i = query_items.length - 1; i >= 0; i--) {
-	    if (~data.indexOf(query_items[i]))
-	      return true;
+		if (~data.indexOf(query_items[i]))
+		  return true;
 	  };
-        });
+		});
 
 	if ( ! items || ! items.length) {
-          return this.shown ? this.hide() : this;
-        } else {
-          items = items.slice(0, this.options.maxResults);
-        }
+		  return this.shown ? this.hide() : this;
+		} else {
+		  items = items.slice(0, this.options.maxResults);
+		}
 
-        return this.render(this.sorter(items)).show();
-      },
-      sorter: function (items) {
-        var that = this,
-            beginswith = [],
-            caseSensitive = [],
-            caseInsensitive = [],
-            item;
+		return this.render(this.sorter(items)).show();
+	  },
+	  sorter: function (items) {
+		var that = this,
+			beginswith = [],
+			caseSensitive = [],
+			caseInsensitive = [],
+			item;
 
-        while (item = items.shift()) {
-          if (!item[that.options.display].toLowerCase().indexOf(this.query.toLowerCase())) {
-            beginswith.push(item);
-          } else if (~item[that.options.display].indexOf(this.query)) {
-            caseSensitive.push(item);
-          } else {
-            caseInsensitive.push(item);
-          }
-        }
+		while (item = items.shift()) {
+		  if (!item[that.options.display].toLowerCase().indexOf(this.query.toLowerCase())) {
+			beginswith.push(item);
+		  } else if (~item[that.options.display].indexOf(this.query)) {
+			caseSensitive.push(item);
+		  } else {
+			caseInsensitive.push(item);
+		  }
+		}
 
-        return beginswith.concat(caseSensitive, caseInsensitive);
-      },
+		return beginswith.concat(caseSensitive, caseInsensitive);
+	  },
 
-      show: function () {
-        var pos = $.extend({}, this.$element.offset(), {
-            height: this.$element[0].offsetHeight
-        });
+	  show: function () {
+		var pos = $.extend({}, this.$element.offset(), {
+			height: this.$element[0].offsetHeight
+		});
 
-        this.$menu.css({
-            top: pos.top + pos.height,
-            left: pos.left
-        });
+		this.$menu.css({
+			top: pos.top + pos.height,
+			left: pos.left
+		});
 
-        this.$menu.show();
-        this.shown = true;
-        return this;
-      },
+		this.$menu.show();
+		this.shown = true;
+		return this;
+	  },
 
-      hide: function () {
-        this.$menu.hide();
-        this.shown = false;
-        return this;
-      },
+	  hide: function () {
+		this.$menu.hide();
+		this.shown = false;
+		return this;
+	  },
 
-      highlighter: function (text) {
-        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-        return text.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-          return '<strong>' + match + '</strong>';
-        });
-      },
+	  highlighter: function (text) {
+		var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+		return text.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+		  return '<strong>' + match + '</strong>';
+		});
+	  },
 
-      render: function (items) {
+	  render: function (items) {
 
-        var that = this,
-          $templateItem,
-          $standardItem;
+		var that = this,
+		  $templateItem,
+		  $standardItem;
 
-        items = $(items).map(function (i, item) {
-            if (that.options.tmpl) {
-              i = $(that.options.tmpl(item));
-            } else {
-              i = $(that.options.item);
-            }
+		items = $(items).map(function (i, item) {
+			if (that.options.tmpl) {
+			  i = $(that.options.tmpl(item));
+			} else {
+			  i = $(that.options.item);
+			}
 
-            if (typeof that.options.val === 'string') {
-              i.attr('data-value', item[that.options.val]);
-            } else {
-              i.attr('data-value', JSON.stringify($.extend({}, that.options.val, item)))
-            }
+			if (typeof that.options.val === 'string') {
+			  i.attr('data-value', item[that.options.val]);
+			} else {
+			  i.attr('data-value', JSON.stringify($.extend({}, that.options.val, item)))
+			}
 
-            // Modification to allow html templates
-            $templateItem = item[that.options.display];
-            $standardItem = i.find('a');
+			// Modification to allow html templates
+			$templateItem = item[that.options.display];
+			$standardItem = i.find('a');
 
-            if ($templateItem.indexOf('typeahead-display-val') > 0) {
-              $standardItem.html($templateItem).find('.typeahead-display-val').each(function(){
-                $(this).html(that.highlighter($(this).html()));
-              });
-            }
-            else {
-              $standardItem.html(that.highlighter($templateItem));
-            }
+			if ($templateItem.indexOf('typeahead-display-val') > 0) {
+			  $standardItem.html($templateItem).find('.typeahead-display-val').each(function(){
+				$(this).html(that.highlighter($(this).html()));
+			  });
+			}
+			else {
+			  $standardItem.html(that.highlighter($templateItem));
+			}
 
-            return i[0];
+			return i[0];
 
-            // End Modification to allow html templates
+			// End Modification to allow html templates
 
 
-            $templateItem = i.find('.typeahead-display-val');
-            $standardItem = i.find('a');
+			$templateItem = i.find('.typeahead-display-val');
+			$standardItem = i.find('a');
 
-            if ($templateItem.length) {
-              $templateItem.html(that.highlighter(item[that.options.display]))
-            } else if ($standardItem.length) {
-              $standardItem.html(that.highlighter(item[that.options.display]));
-            }
+			if ($templateItem.length) {
+			  $templateItem.html(that.highlighter(item[that.options.display]))
+			} else if ($standardItem.length) {
+			  $standardItem.html(that.highlighter(item[that.options.display]));
+			}
 
-            return i[0];
-        });
+			return i[0];
+		});
 
-        items.first().addClass('active');
+		items.first().addClass('active');
 
-        setTimeout(function() {
-          that.$menu.html(items);
-        }, 250)
+		setTimeout(function() {
+		  that.$menu.html(items);
+		}, 250)
 
-        return this;
-      },
+		return this;
+	  },
 
-      select: function () {
-        var $selectedItem = this.$menu.find('.active');
-        this.$element.val($selectedItem.text()).change();
-        this.options.itemSelected(JSON.parse($selectedItem.attr('data-value')));
-        return this.hide();
-      },
+	  select: function () {
+		var $selectedItem = this.$menu.find('.active');
+		this.$element.val($selectedItem.text()).change();
+		this.options.itemSelected(JSON.parse($selectedItem.attr('data-value')));
+		return this.hide();
+	  },
 
-      next: function (event) {
-        var active = this.$menu.find('.active').removeClass('active');
-        var next = active.next();
+	  next: function (event) {
+		var active = this.$menu.find('.active').removeClass('active');
+		var next = active.next();
 
-        if (!next.length) {
-          next = $(this.$menu.find('li')[0]);
-        }
+		if (!next.length) {
+		  next = $(this.$menu.find('li')[0]);
+		}
 
-        next.addClass('active');
-      },
+		next.addClass('active');
+	  },
 
-      prev: function (event) {
-        var active = this.$menu.find('.active').removeClass('active');
-        var prev = active.prev();
+	  prev: function (event) {
+		var active = this.$menu.find('.active').removeClass('active');
+		var prev = active.prev();
 
-        if (!prev.length) {
-          prev = this.$menu.find('li').last();
-        }
+		if (!prev.length) {
+		  prev = this.$menu.find('li').last();
+		}
 
-        prev.addClass('active');
-      },
+		prev.addClass('active');
+	  },
 
-      listen: function () {
-          this.$element
-            .on('blur', $.proxy(this.blur, this))
-            .on('keyup', $.proxy(this.keyup, this));
+	  listen: function () {
+		  this.$element
+			.on('blur', $.proxy(this.blur, this))
+			.on('keyup', $.proxy(this.keyup, this));
 
-          if (this.eventSupported('keydown')) {
-            this.$element.on('keydown', $.proxy(this.keypress, this));
-          } else {
-            this.$element.on('keypress', $.proxy(this.keypress, this));
-          }
+		  if (this.eventSupported('keydown')) {
+			this.$element.on('keydown', $.proxy(this.keypress, this));
+		  } else {
+			this.$element.on('keypress', $.proxy(this.keypress, this));
+		  }
 
-          this.$menu
-            .on('click', $.proxy(this.click, this))
-            .on('mouseenter', 'li', $.proxy(this.mouseenter, this));
-      },
+		  this.$menu
+			.on('click', $.proxy(this.click, this))
+			.on('mouseenter', 'li', $.proxy(this.mouseenter, this));
+	  },
 
-      keyup: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+	  keyup: function (e) {
+		e.stopPropagation();
+		e.preventDefault();
 
-        switch (e.keyCode) {
-          case _keyCodes.DOWN:
-          case _keyCodes.UP:
-             break;
-          case _keyCodes.TAB:
-          case _keyCodes.ENTER:
-            if (!this.shown) return;
-            this.select();
-            break;
-          case _keyCodes.ESCAPE:
-            this.hide();
-            break;
-          default:
-            this.lookup();
-        }
-      },
+		switch (e.keyCode) {
+		  case _keyCodes.DOWN:
+		  case _keyCodes.UP:
+			 break;
+		  case _keyCodes.TAB:
+		  case _keyCodes.ENTER:
+			if (!this.shown) return;
+			this.select();
+			break;
+		  case _keyCodes.ESCAPE:
+			this.hide();
+			break;
+		  default:
+			this.lookup();
+		}
+	  },
 
-      keypress: function (e) {
-        e.stopPropagation();
+	  keypress: function (e) {
+		e.stopPropagation();
 
-        if (!this.shown) return;
+		if (!this.shown) return;
 
-        switch (e.keyCode) {
-          case _keyCodes.TAB:
-          case _keyCodes.ESCAPE:
-          case _keyCodes.ENTER:
-            e.preventDefault();
-            break;
-          case _keyCodes.UP:
-            e.preventDefault();
-            this.prev();
-            break;
-          case _keyCodes.DOWN:
-            e.preventDefault();
-            this.next();
-            break;
-        }
-      },
+		switch (e.keyCode) {
+		  case _keyCodes.TAB:
+		  case _keyCodes.ESCAPE:
+		  case _keyCodes.ENTER:
+			e.preventDefault();
+			break;
+		  case _keyCodes.UP:
+			e.preventDefault();
+			this.prev();
+			break;
+		  case _keyCodes.DOWN:
+			e.preventDefault();
+			this.next();
+			break;
+		}
+	  },
 
-      blur: function (e) {
-        var that = this;
-        e.stopPropagation();
-        e.preventDefault();
-        setTimeout(function () {
-          if (!that.$menu.is(':focus')) {
-            that.hide();
-          }
-        }, 150);
-      },
+	  blur: function (e) {
+		var that = this;
+		e.stopPropagation();
+		e.preventDefault();
+		setTimeout(function () {
+		  if (!that.$menu.is(':focus')) {
+			that.hide();
+		  }
+		}, 150);
+	  },
 
-      click: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        this.select();
-      },
+	  click: function (e) {
+		e.stopPropagation();
+		e.preventDefault();
+		this.select();
+	  },
 
-      mouseenter: function (e) {
-        this.$menu.find('.active').removeClass('active');
-        $(e.currentTarget).addClass('active');
-      }
+	  mouseenter: function (e) {
+		this.$menu.find('.active').removeClass('active');
+		$(e.currentTarget).addClass('active');
+	  }
   }
 
   //  Plugin definition
   $.fn.typeahead = function (option) {
-    return this.each(function () {
-      var $this = $(this),
-          data = $this.data('typeahead'),
-          options = typeof option === 'object' && option;
+	return this.each(function () {
+	  var $this = $(this),
+		  data = $this.data('typeahead'),
+		  options = typeof option === 'object' && option;
 
-      if (!data) {
-          $this.data('typeahead', (data = new Typeahead(this, options)));
-      }
+	  if (!data) {
+		  $this.data('typeahead', (data = new Typeahead(this, options)));
+	  }
 
-      if (typeof option === 'string') {
-          data[option]();
-      }
-    });
+	  if (typeof option === 'string') {
+		  data[option]();
+	  }
+	});
   }
 
   $.fn.typeahead.defaults = _defaults;
@@ -1129,11 +1146,11 @@ function ($) {
 
   //  Data API (no-JS implementation)
   $(function () {
-    $('body').on('focus.typeahead.data-api', '[data-provide="typeahead"]', function (e) {
-      var $this = $(this);
-      if ($this.data('typeahead')) return;
-      e.preventDefault();
-      $this.typeahead($this.data());
-    })
+	$('body').on('focus.typeahead.data-api', '[data-provide="typeahead"]', function (e) {
+	  var $this = $(this);
+	  if ($this.data('typeahead')) return;
+	  e.preventDefault();
+	  $this.typeahead($this.data());
+	})
   });
 } (window.jQuery);
