@@ -6,6 +6,17 @@
 		return ($(el).data('sortableId')) || $(el).find(handle).data('sortableId');
 	}
 
+	function buildFormData(items, itemName) {
+		var tagNameArr = [];
+
+		itemName = itemName || "item";
+		$.each(items, function() {
+			tagNameArr.push(itemName + "[]=" + $(this).data("sortableId"));
+		});
+
+		return tagNameArr.join("&");
+	}
+
  /* sortable DATA-API
 	* ============ */
 
@@ -23,17 +34,23 @@ $(function () {
 					tolerance: $this.data('tolerance'),
 					stop: function(event, ui) {
 						if ($(this).data('sortUrl')) {
-							// determine whether we move the element up or down
-							$.ajax([
-								$(this).data('sortUrl'), 
-								'&from=',
-								getElementSortableId(ui.item, $(this).data('handle')),
-								'&to=',
-								getElementSortableId(ui.item.next(), $(this).data('handle'))
-							].join(''));
-						}
-						else
-						{
+							if ($(this).data('postAll')) {
+								$.ajax({
+									url: $(this).data("sortUrl"),
+									data: buildFormData($(this).find("[data-sortable-id]")),
+									type:"post",
+									dataType:"json"
+								});
+							} else {
+								$.ajax([
+									$(this).data('sortUrl'), 
+									'&from=',
+									getElementSortableId(ui.item, $(this).data('handle')),
+									'&to=',
+									getElementSortableId(ui.item.next(), $(this).data('handle'))
+								].join(''));
+							}
+						} else {
 							$(this).children().each(function(i){
 								$(this).find('[data-sortable="position"]').val(i);
 							});
