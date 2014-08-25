@@ -68,6 +68,11 @@ abstract class Kohana_Controller_Tart_Layout extends Controller_Template {
         $ids = $this->request->post('id') ?: $this->request->query('id');
         $action = $this->request->post('action') ?: $this->request->query('action');
 
+        if ( ! $ids) {
+            $this->notify('error', 'No items selected');
+            $this->redirect($this->request->referrer() ?: Tart::uri($this->request->controller()));
+        }
+
         $this->{'batch_'.$action}($ids);
     }
 
