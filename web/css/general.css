@@ -44,7 +44,9 @@ textarea.hide {
 .row-fluid ul.thumbnails li.span1:nth-child(12n + 13) {
   margin-left: 0;
 }
-
+.row-fluid ul.thumbnails li.thumbnail-folder {
+  height: 200px;
+}
 .table tr.success > td {
   background-color: #dff0d8;
 }
@@ -68,7 +70,7 @@ textarea.hide {
   margin-bottom: 10px;
 }
 
-/* Image Tags 
+/* Image Tags
 ====================================== */
 
 .image-tags ul {
@@ -118,7 +120,7 @@ textarea.hide {
   padding: 1px 3px;
 }
 
-/* Inner Group 
+/* Inner Group
 ====================================== */
 
 .inner-group {
@@ -131,7 +133,7 @@ textarea.hide {
   width: 92%;
 }
 
-/* Small Thumb 
+/* Small Thumb
 ====================================== */
 
 .small-thumb {
@@ -142,7 +144,7 @@ textarea.hide {
   height: 100%;
 }
 
-/* Draggable Plugin 
+/* Draggable Plugin
 ====================================== */
 
 .draggable-container {
@@ -190,7 +192,7 @@ table.ui-sortable .sortable-placeholder {
   height: 170px;
 }
 
-/* Filter Plugin 
+/* Filter Plugin
 ====================================== */
 
 *[data-provide="filters"] {
@@ -228,7 +230,7 @@ table.ui-sortable .sortable-placeholder {
   opacity: 0.9;
 }
 
-/* Stats 
+/* Stats
 ====================================== */
 
 .stats .thumbnail {
