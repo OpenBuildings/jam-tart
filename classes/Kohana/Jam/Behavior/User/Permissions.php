@@ -72,8 +72,10 @@ class Kohana_Jam_Behavior_User_Permissions extends Jam_Behavior {
             $data->return = TRUE;
             $data->stop = TRUE;
         }
-
-        $data->return = array_key_exists($permission, $user->permissions());
-        $data->stop = TRUE;
+        else
+        {
+            $data->return = array_key_exists($permission, $user->permissions());
+            $data->stop = TRUE;
+        }
     }
 }
