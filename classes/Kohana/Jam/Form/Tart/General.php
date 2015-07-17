@@ -191,8 +191,8 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 		if ( ! ($this->object()->{$name} instanceof Upload_File))
 			throw new Kohana_Exception('Upload widget is used for upload file fields only for name :name', array(':name' => $name));;
 
-		return Tart::html($this, function($h, $self) use ($name, $options){
-			$h('div', array('class' => 'fileupload '.(($self->object()->{$name}->is_empty()) ? 'fileupload-new' : 'fileupload-exists'), 'data-provides' => 'fileupload'), function($h, $self) use ($name, $options) {
+		return Tart::html($this, function($h, $self) use ($name, $options, $attributes){
+			$h('div', array('class' => 'fileupload '.(($self->object()->{$name}->is_empty()) ? 'fileupload-new' : 'fileupload-exists'), 'data-provides' => 'fileupload'), function($h, $self) use ($name, $options, $attributes) {
 				$h('div', array('class' => 'fileupload-new thumbnail', 'style' => 'width:100px; height:75px;line-height:75px;text-align:center;'), function($h) {
 					$h('img', array('src' => 'http://www.placehold.it/100x75/EFEFEF/AAAAAA&text=no+image'));
 				});
@@ -211,10 +211,12 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 					}
 				});
 
-				$h('span.btn.btn-file', function($h, $self) use ($name){
+				$h('span.btn.btn-file', function($h, $self) use ($name, $attributes){
+					$disabled = Arr::get($attributes, 'disabled', null);
+
 					$h('span.fileupload-new', 'Select Image');
 					$h('span.fileupload-exists', 'Change Image');
-					$h->add($self->file($name, array('temp_source' => TRUE)));
+					$h->add($self->file($name, array('temp_source' => TRUE), array('disabled' => $disabled)));
 				});
 
 				$remove = Arr::get($options, 'remove');
@@ -310,6 +312,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 		return Tart::html($this, function($h, $self) use ($name, $options, $attributes) {
 
 			$current = $self->object()->$name;
+			$disabled = Arr::get($attributes, 'disabled', null);
 			$model = isset($options['model']) ? $options['model'] : $self->object()->meta()->association($name)->foreign_model;
 			$template = Arr::get($options, 'template', 'tart/typeahead/remoteselect');
 
@@ -328,7 +331,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 
 			$options['url'] = strtr($options['url'], array('{{name}}' => $attributes['name']));
 
-			$h('input', array('name' => $attributes['name'], 'type' => 'hidden', 'value' => ''));
+			$h('input', array('name' => $attributes['name'], 'type' => 'hidden', 'value' => '', 'disabled' => $disabled));
 
 			$label = Arr::get($options, 'label', __(Inflector::humanize($name)));
 			$default_placeholder = __('Search for :label', array(':label' => strtolower($label)));
@@ -342,6 +345,7 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 				'data-container' => '#'.$options['container'],
 				'data-overwrite' => 1,
 				'data-url' => $options['url'],
+				'disabled' => $disabled,
 			));
 
 			$h('span', array('id' => $options['container'], 'class' => 'remoteselect-container'), function($h, $self) use ($current, $model, $options) {
