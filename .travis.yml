@@ -4,14 +4,20 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
 
 notifications:
   email: false
   slack:
     secure: dUHUpv7ct2DoeMREPz+FV3S2a4H78Dre59C7G3/N7AhSJeRcpoEuf0OSfDUvda+2+uXZK1jbD3isuYYda0JtQkEA0i90YCjiX5LqgDZ4axwxR7WqD9CBTaDs9CaQhia477MseZ7am0eBdaa9TTfcbNSU+9cD8Zd8U1R/876brWM=
 
-install:
+before_install:
   - composer selfupdate
+
+install:
   - composer install --no-interaction
 
 before_script:
