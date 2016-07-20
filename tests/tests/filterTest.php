@@ -27,7 +27,7 @@ class Jamtart_FilterTest extends PHPUnit_Framework_TestCase {
 
 		$filter->apply($collection);
 
-		$this->assertEquals('SELECT `test_cities`.* FROM `test_cities` WHERE `test_cities`.`name` = \'1\'', (string) $collection);
+		$this->assertEquals('SELECT test_cities.* FROM test_cities WHERE test_cities.name = \'1\'', (string) $collection);
 		$this->assertEquals('Active 1', $filter->entries('test')->active());
 	}
 

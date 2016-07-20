@@ -25,10 +25,9 @@ spl_autoload_register('test_autoload');
 Kohana::$config
 	->load('database')
 		->set(Kohana::TESTING, array(
-			'type'       => 'MySQL',
+			'type'       => 'PDO',
 			'connection' => array(
-				'hostname'   => 'localhost',
-				'database'   => 'test-jam-tart',
+				'dsn'        => 'mysql:host=localhost;dbname=test-jam-tart',
 				'username'   => 'root',
 				'password'   => '',
 				'persistent' => TRUE,
