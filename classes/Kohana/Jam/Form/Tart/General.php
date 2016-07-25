@@ -351,7 +351,15 @@ abstract class Kohana_Jam_Form_Tart_General extends Jam_Form_General {
 			$h('span', array('id' => $options['container'], 'class' => 'remoteselect-container'), function($h, $self) use ($current, $model, $options) {
 				if ($current)
 				{
-					$h->add(Request::factory(strtr($options['url'], array('{{model}}' => $model, '{{id}}' => Jam_Form::list_id($current))))->execute());
+					$url = strtr($options['url'], array('{{model}}' => $model, '{{id}}' => Jam_Form::list_id($current)));
+					$split_uri = explode('?', $url);
+					$uri = array_shift($split_uri);
+					$query = array();
+					if ($split_uri)
+					{
+						parse_str($split_uri[0], $query);
+					}
+					$h->add(Request::factory($uri)->query($query)->execute());
 				}
 			});
 

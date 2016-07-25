@@ -21,6 +21,7 @@
 	"require-dev": {
 		"twbs/bootstrap": "2.3.*",
 		"openbuildings/kohana-test-bootsrap": "0.1.*",
-		"openbuildings/jam-auth": "~0.3.2"
+		"openbuildings/jam-auth": "~0.3.2",
+		"phpunit/phpunit": "~4.1.0"
 	}
 }
