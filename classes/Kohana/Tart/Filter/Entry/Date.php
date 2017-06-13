@@ -11,7 +11,9 @@ abstract class Kohana_Tart_Filter_Entry_Date extends Tart_Filter_Entry {
 
 	public function render()
 	{
-		return $this->parent()->form()->row('input', $this->name(), array(), array('type' => 'date', 'tabindex' => $this->tabindex()));
+		return $this->parent()->form()->row('input', $this->name(), array(
+		    'label' => $this->label(),
+        ), array('type' => 'date', 'tabindex' => $this->tabindex()));
 	}
 
 	public function default_callback()
