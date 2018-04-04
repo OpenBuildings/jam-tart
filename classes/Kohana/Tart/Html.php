@@ -160,7 +160,7 @@ abstract class Kohana_Tart_Html {
 	 */
 	public static function submenu($controller, $current,  array $items = array())
 	{
-		return Tart::html(NUll, function($h) use ($controller, $current, $items) {
+		return Tart::html(NULL, function($h) use ($controller, $current, $items) {
 			$h('ul.nav.nav-pills', function($h) use ($controller, $current, $items) {
 				foreach ($items as $item => $title) 
 				{

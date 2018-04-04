@@ -66,12 +66,12 @@ abstract class Kohana_Tart {
 
     public static function form($context = NULL, $content = NULL)
     {
-        return new Builder_Form(NULL, NULl, $content, $context);
+        return new Builder_Form(NULL, NULL, $content, $context);
     }
 
     public static function html($context = NULL, $content = NULL)
     {
-        return new Builder_Html(NULL, NULl, $content, $context);
+        return new Builder_Html(NULL, NULL, $content, $context);
     }
 
     public static function entry($name, $params = NULL, $callback = NULL)
