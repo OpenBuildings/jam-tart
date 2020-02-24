@@ -2,7 +2,14 @@
 	"name": "openbuildings/jam-tart",
 	"type": "kohana-module",
 	"description": "Admin Builder for Kohana, using Jam ORM",
-	"keywords": ["kohana", "admin", "jam", "twitter-bootstrap", "cms", "backend"],
+	"keywords": [
+		"kohana",
+		"admin",
+		"jam",
+		"twitter-bootstrap",
+		"cms",
+		"backend"
+	],
 	"homepage": "https://github.com/OpenBuildings/jam-tart",
 	"license": "BSD-3-Clause",
 	"authors": [
@@ -22,6 +29,6 @@
 		"twbs/bootstrap": "2.3.*",
 		"openbuildings/kohana-test-bootsrap": "0.1.*",
 		"openbuildings/jam-auth": "~0.3.2",
-		"phpunit/phpunit": "~4.1.0"
+		"phpunit/phpunit": "~7.5.20"
 	}
 }
