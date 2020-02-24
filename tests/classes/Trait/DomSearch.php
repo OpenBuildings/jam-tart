@@ -10,9 +10,9 @@ trait Trait_DomSearch
 
 		$crawler = $crawler->filter($selector);
 
-		if(!empty($content)) {
+		if (!empty($content)) {
 			$crawler = $crawler->reduce(function (Crawler $node) use ($content) {
-				if($content === '') {
+				if ($content === '') {
 					return $node->text() === '';
 				}
 
@@ -23,9 +23,9 @@ trait Trait_DomSearch
 
 		$found = count($crawler);
 
-		if(is_bool($count)) {
+		if (is_bool($count)) {
 			$this->assertEquals($found > 0, $count, $message);
-		} else if(is_numeric($count)) {
+		} else if (is_numeric($count)) {
 			$this->assertEquals($found, $count,$message);
 		} else {
 			throw new Exception('Invalid count format');
