@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Jamtart_ColumnTest 
  *
@@ -10,7 +12,9 @@
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
  */
-class Jamtart_ColumnTest extends PHPUnit_Framework_TestCase {
+class Jamtart_ColumnTest extends TestCase {
+
+	use Trait_DomSearch;
 
 	public $city;
 	public $country;
@@ -110,6 +114,6 @@ class Jamtart_ColumnTest extends PHPUnit_Framework_TestCase {
 		$column->set_filter($filter, 'area');
 		$rendered = (string) $column->name('name')->item($this->city)->render();
 
-		$this->assertSelectEquals('span[data-provide="filters"][draggable="true"][data-dropzone=".tart-filter"', 'Bigville', TRUE, $rendered);
+		$this->assertSelectEquals('span[data-provide="filters"][draggable="true"][data-dropzone=".tart-filter"]', 'Bigville', TRUE, $rendered);
 	}
 }
