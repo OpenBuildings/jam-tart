@@ -91,18 +91,6 @@ $(function(){
 		$(this).closest('table').find('tbody > tr > td:first-child input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 	});
 
-	$('body').on('click', '[data-toggle="modal"]', function(e) {
-		e.preventDefault();
-		var url = $(this).attr('href');
-		if (url.indexOf('#') === 0) {
-			$(url).modal('open');
-		} else {
-			$.get(url, function(data) {
-				$('<div class="modal hide fade">' + data + '</div>').modal();
-			}).success(function() { $('input:text:visible:first').focus(); });
-		}
-	});
-	
 	$('body').on('change', 'select[data-select-custom]', function(){
 		if ($(this).val() == 'custom') {
 			$($(this).data('select-custom')).addClass('in').removeAttr('disabled');
