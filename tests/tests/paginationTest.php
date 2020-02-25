@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Jamtart_PaginationTest 
  *
@@ -10,7 +12,7 @@
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
  */
-class Jamtart_PaginationTest extends PHPUnit_Framework_TestCase {
+class Jamtart_PaginationTest extends TestCase {
 
 	public function test_getters_setters()
 	{
@@ -34,7 +36,11 @@ class Jamtart_PaginationTest extends PHPUnit_Framework_TestCase {
 
 	public function test_apply()
 	{
-		$collection = $this->getMock('Jam_Query_Builder_Collection', array('offset', 'limit'), array('test_city'));
+		$collection = $this
+			->getMockBuilder(Jam_Query_Builder_Collection::class)
+			->disableOriginalConstructor()
+			->getMock();
+
 		$collection
 			->expects($this->once())
 			->method('limit')

@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Jamtart_HtmlTest 
  *
@@ -10,8 +12,9 @@
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
  */
-class Jamtart_HtmlTest extends PHPUnit_Framework_TestCase {
+class Jamtart_HtmlTest extends TestCase {
 
+	use Trait_DomSearch;
 
 	public function data_tab()
 	{

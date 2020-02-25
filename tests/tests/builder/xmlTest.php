@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Jamtart_Builder_XmlTest 
  *
@@ -11,7 +13,7 @@
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
  */
-class Jamtart_Builder_XmlTest extends PHPUnit_Framework_TestCase {
+class Jamtart_Builder_XmlTest extends TestCase {
 	
 	public function data_arguments()
 	{

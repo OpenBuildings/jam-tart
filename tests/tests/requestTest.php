@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Jamtart_Tart_RequestTest 
  *
@@ -10,7 +12,7 @@
  * @author Ivan Kerin
  * @copyright  (c) 2011-2013 Despark Ltd.
  */
-class Jamtart_RequestTest extends PHPUnit_Framework_TestCase {
+class Jamtart_RequestTest extends TestCase {
 
 	public function test_fix_files()
 	{
