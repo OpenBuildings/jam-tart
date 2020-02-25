@@ -26,7 +26,7 @@ trait Trait_DomSearch
 		if (is_bool($count)) {
 			$this->assertEquals($found > 0, $count, $message);
 		} else if (is_numeric($count)) {
-			$this->assertEquals($found, $count,$message);
+			$this->assertEquals($found, $count, $message);
 		} else {
 			throw new Exception('Invalid count format');
 		}
