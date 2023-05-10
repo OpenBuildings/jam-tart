@@ -258,7 +258,7 @@ abstract class Kohana_Tart_Html {
 					$h('div', array('class' => 'alert alert-'.$notification['label']), function($h) use ($notification) {
 						$h('button', array('type' => 'button', 'class' => 'close', 'data-dismiss' => 'alert'), '&times;');
 						$h('strong', ucfirst($notification['label']));
-						$h->add($notification['message']);
+						$h->add(htmlentities($notification['message']));
 					});
 				}	
 			});

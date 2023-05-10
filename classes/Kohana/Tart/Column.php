@@ -112,7 +112,11 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 			}
 			if ($this->_filter AND $this->_filter_name)
 			{
-				$content = $this->_filter->anchor($this->_filter_name, Jam_Form::list_id($this->item()->{$this->name()}), $content);
+				$content = $this->_filter->anchor(
+					$this->_filter_name,
+					Jam_Form::list_id($this->item()->{$this->name()}),
+					htmlentities($content)
+				);
 			}
 		}
 
@@ -141,7 +145,7 @@ abstract class Kohana_Tart_Column extends Tart_Group_Item {
 
 		return
 			HTML::anchor(Tart::uri($this->controller()).URL::query(array('sort' => $this->name().':'.$direction)),
-			$this->label().' '.'<i class="'.$class.'"></i>');
+				$this->label().' '.'<i class="'.$class.'"></i>');
 	}
 
 	protected static function render_association(Jam_Model $item, Jam_Association $association)
