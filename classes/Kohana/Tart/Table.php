@@ -85,7 +85,16 @@ abstract class Kohana_Tart_Table extends Tart_Group {
 							if ($self->selected() !== NULL AND $self->selected() !== FALSE)
 							{
 								$h('td', function($h, $self) use ($item) {
-									$h('input', array('type' => 'checkbox', 'name' => 'id[]', 'value' => Jam_Form::list_id($item), 'checked' => in_array(Jam_Form::list_id($item), $self->selected()) ? TRUE : NULL));
+									$h(
+										'input',
+										array(
+											'type' => 'checkbox',
+											'name' => 'id[]',
+											'value' => Jam_Form::list_id($item),
+											'checked' => in_array(Jam_Form::list_id($item), $self->selected()) ? TRUE : NULL,
+											'form' => 'batchForm'
+										)
+									);
 								});
 							}
 							foreach ($self->columns() as $column)

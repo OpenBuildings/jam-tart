@@ -9,6 +9,8 @@
  */
 abstract class Kohana_Tart {
 
+    private const CSRF_SESSION_TOKEN_INDEX = 'tart_csrf_token';
+
     public static function convert_to_class($name)
     {
         return str_replace(' ', '_', ucwords(str_replace('_', ' ', $name)));
@@ -219,5 +221,15 @@ abstract class Kohana_Tart {
 
             return Route::url($route_name, $params);
         }
+    }
+
+    public static function generate_csrf_token()
+    {
+        Session::instance()->set(self::CSRF_SESSION_TOKEN_INDEX, bin2hex(random_bytes(35)));
+    }
+
+    public static function get_csrf_token(): string
+    {
+        return Session::instance()->get(self::CSRF_SESSION_TOKEN_INDEX);
     }
 }

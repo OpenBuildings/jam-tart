@@ -13,7 +13,7 @@ abstract class Kohana_Tart_Column_Actions extends Tart_Column {
 	
 	/**
 	 * Getter / Setter
-	 * @param  boolean $sortable 
+	 * @param  boolean $sortable
 	 * @return boolean|$this
 	 */
 	public function sortable($sortable = NULL)
@@ -28,8 +28,8 @@ abstract class Kohana_Tart_Column_Actions extends Tart_Column {
 
 	/**
 	 * Getter / Setter for the width, defaults to 105, and 180 when sortable
-	 * @param  integer $width 
-	 * @return integer|$this        
+	 * @param  integer $width
+	 * @return integer|$this
 	 */
 	public function width($width = NULL)
 	{
@@ -48,8 +48,8 @@ abstract class Kohana_Tart_Column_Actions extends Tart_Column {
 
 	/**
 	 * Return the controls for sortable (up and down buttons)
-	 * @param  mixed $item 
-	 * @return string       
+	 * @param  mixed $item
+	 * @return string
 	 */
 	public function sortable_controls($item)
 	{
@@ -81,9 +81,24 @@ abstract class Kohana_Tart_Column_Actions extends Tart_Column {
 				{
 					$params['controller'] = $self->controller();
 				}
-				
-				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'edit'))), __('Edit'), array('class' => 'btn btn-small')));
-				$h->add(Tart_Html::anchor(Tart::uri($item, Arr::merge($params, array('action' => 'delete'))), __('Delete'), array('class' => 'btn btn-small btn-danger', 'data-confirm' => __('Are you sure you want to delete this :item?', array(':item' => Inflector::humanize($item->meta()->model()))))));
+
+				$h->add(Tart_Html::index_action(
+					Tart::uri($item, Arr::merge($params, array('action' => 'edit'))),
+					__('Edit'),
+					array('class' => 'btn btn-small')
+				));
+
+				$h->add(Tart_Html::index_action(
+					Tart::uri($item, Arr::merge($params, array('action' => 'delete'))),
+					__('Delete'),
+					array(
+						'class' => 'btn btn-small btn-danger',
+						'data-confirm' => __(
+							'Are you sure you want to delete this :item?',
+							array(':item' => Inflector::humanize($item->meta()->model()))
+						)
+					)
+				));
 			});
 		};
 	}
