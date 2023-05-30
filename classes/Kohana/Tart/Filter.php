@@ -83,7 +83,11 @@ abstract class Kohana_Tart_Filter extends Tart_Group {
 							unset($data[$entry->name()]);
 
 							return
-								HTML::anchor(Tart::uri($self->controller()).URL::query(array_filter($data), FALSE), $entry->active(), array('class' => 'label'));
+								HTML::anchor(
+									Tart::uri($self->controller()).URL::query(array_filter($data), FALSE),
+									htmlentities($entry->active()),
+									array('class' => 'label')
+								);
 						}, 
 						$this->entries()
 					)
