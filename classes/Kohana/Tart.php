@@ -228,7 +228,7 @@ abstract class Kohana_Tart {
         Session::instance()->set(self::CSRF_SESSION_TOKEN_INDEX, bin2hex(random_bytes(35)));
     }
 
-    public static function get_csrf_token(): string
+    public static function get_csrf_token(): ?string
     {
         return Session::instance()->get(self::CSRF_SESSION_TOKEN_INDEX);
     }
