@@ -11,9 +11,9 @@ abstract class Kohana_Tart_Html {
 
 	/**
 	 * Render the tab attributes for Bootstrap tab-content
-	 * @param  string $current 
-	 * @param  string $id      
-	 * @return string          
+	 * @param  string $current
+	 * @param  string $id
+	 * @return string
 	 */
 	public static function tab($current, $id)
 	{
@@ -27,11 +27,11 @@ abstract class Kohana_Tart_Html {
 	/**
 	 * Render a html navigation based on the given array. Can be one level deep nested
 	 * If not provided uses jam-tart.navigation for navigation array, currently logged user as user and current controller as controller
-	 * 
-	 * @param  array $navigation         
-	 * @param  Model_User $user               
-	 * @param  string $current_controller 
-	 * @return string                     
+	 *
+	 * @param  array $navigation
+	 * @param  Model_User $user
+	 * @param  string $current_controller
+	 * @return string
 	 */
 	public static function navigation(array $navigation = NULL, $user = NULL, $current_controller = NULL)
 	{
@@ -56,7 +56,7 @@ abstract class Kohana_Tart_Html {
 						$h('a', array('class' => 'brand', 'href' => Tart::uri()), 'Admin');
 						$h('div.nav-collapse.collapse', function($h) use ($navigation, $user, $current_controller) {
 							$h('ul.nav', function($h) use ($navigation, $user, $current_controller) {
-								foreach ($navigation as $controller => $name) 
+								foreach ($navigation as $controller => $name)
 								{
 									if (is_array($name))
 									{
@@ -66,7 +66,7 @@ abstract class Kohana_Tart_Html {
 												$h('a', array('href' => '#', 'class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'), $controller.' <b class="caret"></b>');
 
 												$h('ul.dropdown-menu', function($h) use ($controller, $name, $user, $current_controller) {
-													foreach ($name as $controller => $name) 
+													foreach ($name as $controller => $name)
 													{
 														if (Tart::user_allowed(Tart::uri($controller), $user))
 														{
@@ -140,7 +140,7 @@ abstract class Kohana_Tart_Html {
 				});
 				$h('div', array('class' => 'accordion-body collapse', 'id' => $options['body_id']), function($h) {
 					$h('ul.thumbnails.accordion-inner', function($h, $options) {
-						foreach ($options['collection']->limit($options['limit']) as $item) 
+						foreach ($options['collection']->limit($options['limit']) as $item)
 						{
 							$h->add(View::factory($options['view'], array('item' => $item)));
 						}
@@ -151,18 +151,18 @@ abstract class Kohana_Tart_Html {
 	}
 
 	/**
-	 * Display a pills submenu 
-	 * 
-	 * @param  string $controller 
-	 * @param  string $current    
-	 * @param  array  $items      
-	 * @return string             
+	 * Display a pills submenu
+	 *
+	 * @param  string $controller
+	 * @param  string $current
+	 * @param  array  $items
+	 * @return string
 	 */
 	public static function submenu($controller, $current,  array $items = array())
 	{
 		return Tart::html(NULL, function($h) use ($controller, $current, $items) {
 			$h('ul.nav.nav-pills', function($h) use ($controller, $current, $items) {
-				foreach ($items as $item => $title) 
+				foreach ($items as $item => $title)
 				{
 					$h('li', array('class' => ($current == $item) ? 'active' : NULL), function($h) use ($title, $item, $controller) {
 						$h('a', array('href' => Tart::uri($controller, array('category' => $item))), $title);
@@ -209,6 +209,34 @@ abstract class Kohana_Tart_Html {
 		return HTML::anchor($anchor, $title, $attributes);
 	}
 
+	public static function index_action($anchor, $title = NULL, array $attributes = array(), $user = NULL)
+	{
+		if ( ! $anchor) {
+			return null;
+		}
+
+		$user = $user ?: Auth::instance()->get_user();
+		if ( ! Tart::user_allowed($anchor, $user)) {
+			return null;
+		}
+
+		$token = Tart::get_csrf_token();
+		if ($title === null) {
+			$title = $anchor;
+		}
+
+		$action_form = Form::open($anchor, ['method' => 'GET', 'style' => 'display: inline']);
+
+		if ($token) {
+			$action_form .= Form::hidden('_token', $token);
+		}
+
+		$action_form .= Form::submit_button($title, $attributes);
+		$action_form .= Form::close();
+
+		return $action_form;
+	}
+
 	public static function date_span($timestamp, $local_timestamp = NULL)
 	{
 		$local_timestamp = ($local_timestamp === NULL) ? Jam_Timezone::instance()->convert(time(), Jam_Timezone::DEFAULT_TIMEZONE, Jam_Timezone::USER_TIMEZONE) : (int) $local_timestamp;
@@ -226,7 +254,7 @@ abstract class Kohana_Tart_Html {
 			PHP_INT_MAX => array(Date::YEAR, 'year'),
 		);
 
-		foreach ($timeranges as $renge => $display) 
+		foreach ($timeranges as $renge => $display)
 		{
 			if ($offset <= $renge)
 			{
@@ -245,7 +273,7 @@ abstract class Kohana_Tart_Html {
 		{
 			// This in the future
 			return 'in '.$span;
-		}	
+		}
 	}
 
 	public static function notifications()
@@ -253,14 +281,14 @@ abstract class Kohana_Tart_Html {
 		if ($notifications = Session::instance()->get_once('tart.notifications'))
 		{
 			return Tart::html(NULL, function($h) use ($notifications) {
-				foreach ($notifications as $notification) 
+				foreach ($notifications as $notification)
 				{
 					$h('div', array('class' => 'alert alert-'.$notification['label']), function($h) use ($notification) {
 						$h('button', array('type' => 'button', 'class' => 'close', 'data-dismiss' => 'alert'), '&times;');
 						$h('strong', ucfirst($notification['label']));
 						$h->add(htmlentities($notification['message']));
 					});
-				}	
+				}
 			});
 		}
 	}

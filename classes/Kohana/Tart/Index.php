@@ -29,8 +29,8 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 		}
 		return $this->_collection;
 	}
-	
-	function __construct(Jam_Query_Builder_Collection $collection, $offset, array $columns = array()) 
+
+	function __construct(Jam_Query_Builder_Collection $collection, $offset, array $columns = array())
 	{
 		$this->collection($collection);
 		$this->controller(Inflector::plural($collection->meta()->model()));
@@ -38,7 +38,7 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 
 		$this->_offset = $offset;
 	}
-	
+
 	public function batch_position($batch_position = NULL)
 	{
 		if ($batch_position !== NULL)
@@ -78,12 +78,12 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 
 		return $this->_pagination;
 	}
-	
+
 	public function batch_actions($key = NULL, $value = NULL)
 	{
 		if ($key === NULL)
 			return $this->_batch_actions;
-	
+
 		if (is_array($key))
 		{
 			$this->_batch_actions = $key;
@@ -92,10 +92,10 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 		{
 			if ($value === NULL)
 				return Arr::get($this->_batch_actions, $key);
-	
+
 			$this->_batch_actions[$key] = $value;
 		}
-	
+
 		return $this;
 	}
 
@@ -121,14 +121,19 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 	{
 		if ( ! $this->batch_actions())
 			return NULL;
-		
+
 		return Tart::html($this, function($h, $self){
 			$h('div.form-inline', function($h, $self) {
-				$h('label', 'With Selected: ');
-				foreach ($self->batch_actions() as $action => $title) 
-				{
-					$h('button', array('type' => 'submit', 'name' => 'action', 'value' => $action, 'class' => 'btn'), $title);	
-				}
+				$h->form(
+					Tart::uri($self->controller(), 'batch'),
+					array('method' => 'get', 'style' => 'display: inline', 'id' => 'batchForm'),
+					function($h, $self) {
+						$h('label', 'With Selected: ');
+						foreach ($self->batch_actions() as $action => $title) {
+							$h('button', array('type' => 'submit', 'name' => 'action', 'value' => $action, 'class' => 'btn'), $title);
+						}
+					}
+				);
 			});
 		});
 	}
@@ -145,7 +150,7 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 		}
 		else
 		{
-			$content->selected(FALSE);	
+			$content->selected(FALSE);
 		}
 
 		$content = $content->render();
@@ -154,19 +159,17 @@ abstract class Kohana_Tart_Index extends Tart_Interface {
 			if ( ! $this->batch_actions()) {
 				$h->add($content);
 			} else {
-				$h->form(Tart::uri($self->controller(), 'batch'), array('method' => 'get'), function($h, $self) use ($content) {
-					if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_TOP)
-					{
-						$h->add($self->render_batch_actions());
-					}
+				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_TOP)
+				{
+					$h->add($self->render_batch_actions());
+				}
 
-					$h->add($content);
+				$h->add($content);
 
-					if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTTOM)
-					{
-						$h->add($self->render_batch_actions());
-					}
-				});
+				if ($self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTH OR $self->batch_position() == Kohana_Tart_Index::BATCH_POSITION_BOTTOM)
+				{
+					$h->add($self->render_batch_actions());
+				}
 			}
 
 			$h->add($self->pagination()->render());
